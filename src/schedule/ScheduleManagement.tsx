@@ -10,13 +10,13 @@ interface ScheduleItem {
 }
 
 const ScheduleManagement: React.FC<{ schedule: ScheduleItem[] }> = ({ schedule }) => {
-    // Function to calculate the gap between two schedule items
-    const calculateGap = (startTime: string, endTime: string) => {
-      const start = new Date(startTime);
-      const end = new Date(endTime);
-      const gap = (end.getTime() - start.getTime()) / (1000 * 60); // Gap in minutes
-      return gap;
-    };
+  // Function to calculate the gap between two schedule items
+  const calculateGap = (startTime: string, endTime: string) => {
+    const start = new Date(startTime);
+    const end = new Date(endTime);
+    const gap = (end.getTime() - start.getTime()) / (1000 * 60); // Gap in minutes
+    return gap;
+  };
 
   // Function to format the date in the desired format
   const formatDate = (dateString: string) => {
@@ -25,11 +25,11 @@ const ScheduleManagement: React.FC<{ schedule: ScheduleItem[] }> = ({ schedule }
   };
 
   return (
-    <div style={{ marginLeft: '60px', marginRight: '900px', marginTop: '60px' }}>
+    <div style={{ marginLeft: '10px', marginRight: '10px', marginTop: '60px' }}>
       {schedule.map((item, index) => (
-        <div key={index} style={{ marginBottom: '4px' }}>
-          <div 
-            style={{ 
+        <div key={index} style={{ marginBottom: '4px', paddingRight: '4px', width: '28%' }}>
+          <div
+            style={{
               background: `linear-gradient(to right, #0fdb2b 01%, #a4edad 01%, #a4edad 100%)`,
               padding: '4px',
               margin: '2px 0',
@@ -47,8 +47,8 @@ const ScheduleManagement: React.FC<{ schedule: ScheduleItem[] }> = ({ schedule }
             </p>
           </div>
           {index < schedule.length - 1 && (
-            <div 
-              style={{ 
+            <div
+              style={{
                 background: `linear-gradient(to right, #0fdb2b 01%, #a4edad 01%, #a4edad 100%)`,
                 padding: '4px',
                 margin: '2px 0',

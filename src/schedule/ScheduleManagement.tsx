@@ -3,6 +3,9 @@ import React from 'react';
 interface ScheduleItem {
   starttime: string;
   endtime: string;
+  Resource: {
+    name: string;
+  };
 }
 
 const ScheduleManagement: React.FC<{ schedule: ScheduleItem[] }> = ({ schedule }) => {
@@ -19,7 +22,8 @@ const ScheduleManagement: React.FC<{ schedule: ScheduleItem[] }> = ({ schedule }
       {schedule.map((item, index) => (
         <div key={index} style={{ marginBottom: '16px' }}>
           <p>
-            <strong>Start:</strong> {new Date(item.starttime).toString()} &nbsp;
+            <strong>Resource:</strong> {item.Resource.name}, &nbsp;
+            <strong>Start:</strong> {new Date(item.starttime).toString()}, &nbsp;
             <strong>End:</strong> {new Date(item.endtime).toString()}
           </p>
           {index < schedule.length - 1 && (

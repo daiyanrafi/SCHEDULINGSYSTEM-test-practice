@@ -1,0 +1,22 @@
+[
+    {
+        "@odata.etag": "W/\"4531720\"",
+        "name": "Generic Resource",
+        "bookableresourceid": "8a6c0c7b-4386-ee11-8178-000d3a1aa7b3"
+    },
+    {
+        "@odata.etag": "W/\"12507165\"",
+        "name": "Alicia Thomber",
+        "bookableresourceid": "b3096491-47c6-ee11-9079-000d3a9ddee4"
+    },
+    {
+        "@odata.etag": "W/\"12507237\"",
+        "name": "Carlos Grilo",
+        "bookableresourceid": "6517cafe-4ac6-ee11-9079-000d3a9ddee4"
+    },
+    {
+        "@odata.etag": "W/\"12507186\"",
+        "name": "Alan Steiner",
+        "bookableresourceid": "882b3e52-72bb-ee11-a569-000d3a9ddee4"
+    }
+]

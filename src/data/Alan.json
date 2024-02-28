@@ -1,0 +1,48 @@
+[{
+    "@odata.etag":"W/\"13186151\"",
+    "name":"test01",
+    "starttime":"2024-02-28T01:30:00Z",
+    "endtime":"2024-02-28T03:00:00Z",
+    "duration":90,
+    "bookableresourcebookingid":"fe76f3c8-d6d5-ee11-9079-000d3a9ddee4",
+    "Resource":{
+       "name":"Alan Steiner",
+       "bookableresourceid":"882b3e52-72bb-ee11-a569-000d3a9ddee4"
+    }
+ },
+ {
+    "@odata.etag":"W/\"13186177\"",
+    "name":"test01",
+    "starttime":"2024-02-28T03:00:00Z",
+    "endtime":"2024-02-28T05:00:00Z",
+    "duration":120,
+    "bookableresourcebookingid":"2ad468de-d6d5-ee11-9079-000d3a9ddee4",
+    "Resource":{
+       "name":"Alan Steiner",
+       "bookableresourceid":"882b3e52-72bb-ee11-a569-000d3a9ddee4"
+    }
+ },
+ {
+    "@odata.etag":"W/\"13186204\"",
+    "name":"test01",
+    "starttime":"2024-02-28T05:30:00Z",
+    "endtime":"2024-02-28T07:00:00Z",
+    "duration":90,
+    "bookableresourcebookingid":"99212aef-d6d5-ee11-9079-000d3a9ddee4",
+    "Resource":{
+       "name":"Alan Steiner",
+       "bookableresourceid":"882b3e52-72bb-ee11-a569-000d3a9ddee4"
+    }
+ },
+ {
+    "@odata.etag":"W/\"13186240\"",
+    "name":"test01",
+    "starttime":"2024-02-28T07:00:00Z",
+    "endtime":"2024-02-28T07:30:00Z",
+    "duration":30,
+    "bookableresourcebookingid":"9012f5ff-d6d5-ee11-9079-000d3a9ddee4",
+    "Resource":{
+       "name":"Alan Steiner",
+       "bookableresourceid":"882b3e52-72bb-ee11-a569-000d3a9ddee4"
+    }
+ }]

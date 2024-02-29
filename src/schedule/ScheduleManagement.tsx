@@ -10,24 +10,27 @@ interface ScheduleItem {
 }
 
 const ScheduleManagement: React.FC<{ schedule: ScheduleItem[] }> = ({ schedule }) => {
-  // Function to calculate the gap between two schedule items
   const calculateGap = (startTime: string, endTime: string) => {
     const start = new Date(startTime);
     const end = new Date(endTime);
-    const gap = (end.getTime() - start.getTime()) / (1000 * 60); // Gap in minutes
+    const gap = (end.getTime() - start.getTime()) / (1000 * 60);
     return gap;
   };
 
-  // Function to format the date in the desired format
+  // const formatDateLong = (dateString: string) => {
+  //   const date = new Date(dateString);
+  //   return date.toLocaleString('en-US', { month: 'short', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  // };
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleString('en-US', { month: 'short', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    return date.toLocaleString('en-AU', { hour: '2-digit', minute: '2-digit' });
   };
 
   return (
     <div style={{ marginLeft: '10px', marginRight: '10px', marginTop: '60px' }}>
       {schedule.map((item, index) => (
-        <div key={index} style={{ marginBottom: '4px', paddingRight: '4px', width: '28%' }}>
+        <div key={index} style={{ marginBottom: '4px', paddingRight: '4px', cursor: 'pointer' }}>
           <div
             style={{
               background: `linear-gradient(to right, #0fdb2b 01%, #a4edad 01%, #a4edad 100%)`,
@@ -38,15 +41,12 @@ const ScheduleManagement: React.FC<{ schedule: ScheduleItem[] }> = ({ schedule }
               transition: 'background-color 0.3s', // Add transition for smooth effect
               borderRadius: '8px', // Add rounded borders
             }}
-            onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#ffffff'} // Change background color on hover to white
-            onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'rgba(0, 128, 0, 0.1)'} // Revert background color when not hovering
           >
             <p style={{ margin: 0 }}>
-              {/* <strong>Resource:</strong> {item.Resource.name}, &nbsp; */}
               {formatDate(item.starttime)} - {formatDate(item.endtime)} {item.name}
             </p>
           </div>
-          {index < schedule.length - 1 && (
+          {index < schedule.length - 1 && calculateGap(item.endtime, schedule[index + 1].starttime) > 0 && (
             <div
               style={{
                 background: `linear-gradient(to right, #0fdb2b 01%, #a4edad 01%, #a4edad 100%)`,
@@ -57,10 +57,8 @@ const ScheduleManagement: React.FC<{ schedule: ScheduleItem[] }> = ({ schedule }
                 transition: 'background-color 0.3s', // Add transition for smooth effect
                 borderRadius: '8px', // Add rounded borders
               }}
-              onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#ffffff'} // Change background color on hover to white
-              onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'rgba(0, 0, 255, 0.1)'} // Revert background color when not hovering
             >
-              <p style={{ margin: 0 }}>
+              <p style={{ margin: 0, cursor: 'pointer' }}>
                 <strong>Gap:</strong> {calculateGap(item.endtime, schedule[index + 1].starttime)} Minutes
               </p>
             </div>

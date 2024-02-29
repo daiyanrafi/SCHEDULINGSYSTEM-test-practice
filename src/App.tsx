@@ -3,6 +3,7 @@ import ScheduleManagement from './schedule/ScheduleManagement';
 import scheduleData from './data/Alan.json';
 import ScheduleDashboard from './Dashboard';
 import DashboardParent from './DashboardParent';
+import MyTable from './MyTable/MyTable';
 
 function App() {
   return (
@@ -13,8 +14,9 @@ function App() {
 
         {/* <ScheduleDashboard /> */}
         {/* <ScheduleManagement schedule={scheduleData} /> */}
+        <MyTable/>
 
-        <DashboardParent/>
+        {/* <DashboardParent/> */}
       </header>
     </div>
   );

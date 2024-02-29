@@ -45,17 +45,4 @@
        "name":"Alan Steiner",
        "bookableresourceid":"882b3e52-72bb-ee11-a569-000d3a9ddee4"
     }
- },
- {
-   "@odata.etag": "W/\"13186241\"",
-   "name": "test02",
-   "starttime": "2024-02-28T08:00:00Z",
-   "endtime": "2024-02-28T08:30:00Z",
-   "duration": 30,
-   "bookableresourcebookingid": "9012f5ff-d6d5-ee11-9079-000d3a9ddee5",
-   "Resource": {
-     "name": "Jane Doe",
-     "bookableresourceid": "882b3e52-72bb-ee11-a569-000d3a9ddee5"
-   }
- }
- ]
+ }]

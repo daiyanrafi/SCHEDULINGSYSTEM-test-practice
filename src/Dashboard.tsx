@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import resources from "./data/resource.json";
-import bookings from "./data/bookings.json";
+// ScheduleDashboard.tsx
+
+import React from "react";
 import {
   Button,
   Table,
@@ -14,17 +14,19 @@ import ScheduleManagement from "./schedule/ScheduleManagement";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 
-const ScheduleDashboard: React.FC<{ resources: any[]; bookings: any[] }> = ({
+const ScheduleDashboard: React.FC<{ resources: any[]; bookings: any[]; isModalOpen: boolean; selectedRowData: ScheduleItem | null; onOpenModal: (rowData: ScheduleItem) => void; onCloseModal: () => void; }> = ({
   resources,
   bookings,
+  isModalOpen,
+  selectedRowData,
+  onOpenModal,
+  onCloseModal,
 }) => {
   const startDate = new Date("2024-02-25T23:00:00Z");
   const endDate = new Date("2024-04-12T23:00:00Z");
   const selectedDay: Number = 3;
   const [noofDays, setnoofDays] = React.useState<number>(0);
   const [headers, setHeaders] = React.useState<IScheduleColumn[]>([]);
-  const [selectedRowData, setSelectedRowData] = React.useState<ScheduleItem | null>(null);
-  const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false);
 
   const getbookingsforaday = (
     bookings: any,
@@ -69,8 +71,7 @@ const ScheduleDashboard: React.FC<{ resources: any[]; bookings: any[] }> = ({
         <ScheduleManagement
           schedule={daybookings}
           onRowClick={(rowData: ScheduleItem) => {
-            setSelectedRowData(rowData);
-            setIsModalOpen(true);
+            onOpenModal(rowData);
           }}
         />
       </TableCell>
@@ -151,7 +152,7 @@ const ScheduleDashboard: React.FC<{ resources: any[]; bookings: any[] }> = ({
     return headers;
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     setHeaderSettings(startDate, endDate);
   }, []);
 
@@ -198,7 +199,7 @@ const ScheduleDashboard: React.FC<{ resources: any[]; bookings: any[] }> = ({
         </TableBody>
       </Table>
 
-      <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
+      <Modal open={isModalOpen} onClose={onCloseModal}>
         <Box
           sx={{
             position: "absolute",
@@ -221,7 +222,7 @@ const ScheduleDashboard: React.FC<{ resources: any[]; bookings: any[] }> = ({
                 <p>End Time: {selectedRowData.endtime}</p>
               </div>
               <Button
-                onClick={() => setIsModalOpen(false)}
+                onClick={onCloseModal}
                 variant="contained" // Add variant to make the button prominent
                 color="primary" // Set color to primary for a blue background
               >
@@ -251,5 +252,3 @@ interface ScheduleItem {
     name: string;
   };
 }
-
-///////////////////////////////////////

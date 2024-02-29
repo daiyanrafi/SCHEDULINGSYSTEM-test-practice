@@ -96,12 +96,24 @@ const ScheduleManagement: React.FC<{
         </div>
       ))}
       <Modal open={isBlankCellModalOpen} onClose={() => setIsBlankCellModalOpen(false)}>
-        <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}>
+        <Box sx={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          backgroundColor: "#FFFFFF",
+          padding: "20px",
+          borderRadius: "8px",
+          minWidth: "30%",
+          minHeight: "60%",
+          overflow: "auto",
+        }}>
           <div>
             <p>Please click the cell</p>
           </div>
         </Box>
       </Modal>
+
     </div>
   );
 };

@@ -197,14 +197,36 @@ const ScheduleDashboard: React.FC<{ resources: any[]; bookings: any[] }> = ({
           ))}
         </TableBody>
       </Table>
+
       <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            backgroundColor: "#FFFFFF",
+            padding: "20px",
+            borderRadius: "8px",
+            minWidth: "30%",
+            minHeight: "60%",
+            overflow: "auto",
+          }}
+        >
           {selectedRowData && (
             <div>
-              <p>Name: {selectedRowData.name}</p>
-              <p>Start Time: {selectedRowData.starttime}</p>
-              <p>End Time: {selectedRowData.endtime}</p>
-              <Button onClick={() => setIsModalOpen(false)}>Close</Button>
+              <div style={{ marginBottom: "10px" }}>
+                <p>Name: {selectedRowData.name}</p>
+                <p>Start Time: {selectedRowData.starttime}</p>
+                <p>End Time: {selectedRowData.endtime}</p>
+              </div>
+              <Button
+                onClick={() => setIsModalOpen(false)}
+                variant="contained" // Add variant to make the button prominent
+                color="primary" // Set color to primary for a blue background
+              >
+                Close
+              </Button>
             </div>
           )}
         </Box>
@@ -229,3 +251,5 @@ interface ScheduleItem {
     name: string;
   };
 }
+
+///////////////////////////////////////

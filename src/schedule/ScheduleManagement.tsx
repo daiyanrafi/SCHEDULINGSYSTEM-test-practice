@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useRef } from "react";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
 
 interface ScheduleItem {
   starttime: string;
@@ -9,15 +11,10 @@ interface ScheduleItem {
   };
 }
 
-interface ScheduleManagementProps {
+const ScheduleManagement: React.FC<{
   schedule: ScheduleItem[];
   onRowClick: (rowData: ScheduleItem) => void;
-}
-
-const ScheduleManagement: React.FC<ScheduleManagementProps> = ({
-  schedule,
-  onRowClick,
-}) => {
+}> = ({ schedule, onRowClick }) => {
   const calculateGap = (startTime: string, endTime: string) => {
     const start = new Date(startTime);
     const end = new Date(endTime);
@@ -30,8 +27,22 @@ const ScheduleManagement: React.FC<ScheduleManagementProps> = ({
     return date.toLocaleString("en-AU", { hour: "2-digit", minute: "2-digit" });
   };
 
+  const [isBlankCellModalOpen, setIsBlankCellModalOpen] = React.useState<boolean>(false);
+  // const [isRowModalOpen, setIsRowModalOpen] = React.useState<boolean>(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleRowDoubleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (containerRef.current && containerRef.current === e.target) {
+      setIsBlankCellModalOpen(true);
+    }
+  };
+
   return (
-    <div style={{ marginLeft: "0px", marginRight: "10px", padding: "8px" }}>
+    <div
+      style={{ marginLeft: "0px", marginRight: "10px", padding: "8px" }}
+      onDoubleClick={handleRowDoubleClick}
+      ref={containerRef}
+    >
       {schedule.map((item, index) => (
         <div
           key={index}
@@ -40,18 +51,20 @@ const ScheduleManagement: React.FC<ScheduleManagementProps> = ({
             paddingRight: "4px",
             cursor: "pointer",
           }}
-          onClick={() => onRowClick(item)} // <-- Added onClick handler
+          onClick={() => onRowClick(item)}
         >
           <div
             style={{
               backgroundColor: "#B2D8F4",
               borderLeft: "5px solid #2582D7",
-              padding: "4px",
+              // padding: "4px",
               margin: "2px 0",
               paddingLeft: "02%",
               fontFamily: "Calibri",
               transition: "background-color 0.3s",
               borderRadius: "8px",
+              // Increase padding or margin to increase clickable area
+              padding: "4px 10px", // Example: Increase padding
             }}
           >
             <p style={{ margin: 0 }}>
@@ -63,10 +76,11 @@ const ScheduleManagement: React.FC<ScheduleManagementProps> = ({
             calculateGap(item.endtime, schedule[index + 1].starttime) > 0 && (
               <div
                 style={{
-                  background: `linear-gradient(to right, #0fdb2b 01%, #a4edad 01%, #a4edad 100%)`,
+                  background: "#a4edad",
+                  borderLeft: "5px solid #0fdb2b",
                   padding: "4px",
                   margin: "2px 0",
-                  paddingLeft: "02%",
+                  paddingLeft: "06%",
                   fontFamily: "Calibri",
                   transition: "background-color 0.3s",
                   borderRadius: "8px",
@@ -81,6 +95,13 @@ const ScheduleManagement: React.FC<ScheduleManagementProps> = ({
             )}
         </div>
       ))}
+      <Modal open={isBlankCellModalOpen} onClose={() => setIsBlankCellModalOpen(false)}>
+        <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}>
+          <div>
+            <p>Please click the cell</p>
+          </div>
+        </Box>
+      </Modal>
     </div>
   );
 };

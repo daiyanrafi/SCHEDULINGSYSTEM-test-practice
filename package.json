@@ -14,7 +14,10 @@
     "@types/node": "^16.18.84",
     "@types/react": "^18.2.60",
     "@types/react-dom": "^18.2.19",
+    "daypilot-pro-react": "https://npm.daypilot.org/daypilot-pro-react/trial/2023.2.5582.tar.gz",
     "react": "^18.2.0",
+    "react-calendar-timeline": "^0.28.0",
+    "react-datepicker": "^6.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "typescript": "^4.9.5",
@@ -43,5 +46,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react-calendar-timeline": "^0.28.6",
+    "@types/react-datepicker": "^6.0.2"
   }
 }

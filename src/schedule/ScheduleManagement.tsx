@@ -2,7 +2,9 @@ import React, { useRef } from "react";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 
-interface ScheduleItem {
+// ScheduleManagement.tsx
+
+export interface ScheduleItem {
   starttime: string;
   endtime: string;
   name: string;
@@ -10,6 +12,9 @@ interface ScheduleItem {
     name: string;
   };
 }
+
+// Rest of your component implementation...
+
 
 const ScheduleManagement: React.FC<{
   schedule: ScheduleItem[];

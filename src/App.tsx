@@ -15,6 +15,9 @@ function App() {
         {/* <ScheduleManagement schedule={scheduleData} /> */}
 
         <DashboardParent/>
+
+        {/* <Scheduler/> */}
+        
       </header>
     </div>
   );

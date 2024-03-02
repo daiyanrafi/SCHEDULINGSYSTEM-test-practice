@@ -81,7 +81,7 @@ const ScheduleDashboard: React.FC<{
     }));
 
     return (
-      <div style={{ marginTop: "20px", marginLeft: "50px", marginRight: "50px" }}>
+      <div style={{ marginTop: "20px", marginLeft: "50px", marginRight: "50px", marginBottom: '20px', }}>
         <Grid container spacing={2} alignItems="center">
           <Grid item>
             <DatePicker
@@ -99,26 +99,32 @@ const ScheduleDashboard: React.FC<{
               format="dd-MM-YYYY"
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4} lg={3}> {/* Adjust for middle position use this => "style={{ margin: '0 auto' }}"*/}
-            <FormControl style={{ width: '150px', marginTop: '20px', marginBottom: '20px' }}>
-              <InputLabel id="day-select-label" style={{ fontFamily: 'Calibri' }}>Select Day</InputLabel>
+          <Grid item>
+            <FormControl style={{ width: '150px', marginTop: '20px', marginBottom: '20px', height: '53px', border: '1px solid #ccc', borderRadius: '4px' }}>
+              <InputLabel
+                id="day-select-label"
+                style={{ marginLeft: '10px', marginTop: '-6px', backgroundColor: '#FFF', paddingLeft: '4px' }}
+              >
+                Select Day
+              </InputLabel>
               <Select
-                labelId="day-select-label"
                 value={selectedDay}
                 onChange={handleDayChange}
-                style={{ fontFamily: 'Calibri', width: '100%' }}
+                style={{ width: '100%', height: '100%', border: 'none', borderBottom: '1px solid #ccc', outline: 'none', paddingTop: '5px', paddingLeft: '10px' }} // Adjusted padding
               >
-                <MenuItem value="saturday" style={{ fontFamily: 'Calibri' }}>Saturday</MenuItem>
-                <MenuItem value="sunday" style={{ fontFamily: 'Calibri' }}>Sunday</MenuItem>
-                <MenuItem value="monday" style={{ fontFamily: 'Calibri' }}>Monday</MenuItem>
-                <MenuItem value="tuesday" style={{ fontFamily: 'Calibri' }}>Tuesday</MenuItem>
-                <MenuItem value="wednesday" style={{ fontFamily: 'Calibri' }}>Wednesday</MenuItem>
-                <MenuItem value="thursday" style={{ fontFamily: 'Calibri' }}>Thursday</MenuItem>
-                <MenuItem value="friday" style={{ fontFamily: 'Calibri' }}>Friday</MenuItem>
+                <MenuItem value="saturday">Saturday</MenuItem>
+                <MenuItem value="sunday">Sunday</MenuItem>
+                <MenuItem value="monday">Monday</MenuItem>
+                <MenuItem value="tuesday">Tuesday</MenuItem>
+                <MenuItem value="wednesday">Wednesday</MenuItem>
+                <MenuItem value="thursday">Thursday</MenuItem>
+                <MenuItem value="friday">Friday</MenuItem>
               </Select>
             </FormControl>
           </Grid>
+
         </Grid>
+
         <Timeline
           groups={groups}
           items={allItems}
@@ -127,6 +133,7 @@ const ScheduleDashboard: React.FC<{
         />
       </div>
     );
+
   };
 
 export default ScheduleDashboard;

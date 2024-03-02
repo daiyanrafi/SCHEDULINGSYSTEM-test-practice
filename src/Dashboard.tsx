@@ -88,7 +88,7 @@ const ScheduleDashboard: React.FC<{
               label="Start Date"
               value={startDate}
               onChange={handleStartDateChange}
-              format="yyyy-MM-dd"
+              format="dd-MM-YYYY"
             />
           </Grid>
           <Grid item>
@@ -96,7 +96,7 @@ const ScheduleDashboard: React.FC<{
               label="End Date"
               value={endDate}
               onChange={handleEndDateChange}
-              format="yyyy-MM-dd"
+              format="dd-MM-YYYY"
             />
           </Grid>
           <Grid item xs={12} sm={6} md={4} lg={3}> {/* Adjust for middle position use this => "style={{ margin: '0 auto' }}"*/}

@@ -5,6 +5,7 @@ import moment from 'moment';
 import { MenuItem, Select, FormControl, InputLabel, Grid } from '@material-ui/core';
 import { DatePicker } from "@mui/x-date-pickers";
 
+
 const ScheduleDashboard: React.FC<{
   resources: any[];
   bookings: any[];
@@ -37,26 +38,31 @@ const ScheduleDashboard: React.FC<{
         (startDate && endDate ? (bookingStartTime >= startDate && bookingEndTime <= endDate) : true);
     });
 
-    // Calculate gaps between consecutive bookings
-    const gapItems: { id: string, group: string, title: string, start_time: moment.Moment, end_time: moment.Moment }[] = [];
-    filteredBookings.forEach((booking, index) => {
-      if (index > 0) {
-        const prevBookingEndTime = moment(filteredBookings[index - 1].endtime);
-        const currentBookingStartTime = moment(booking.starttime);
-        const gapDuration = moment.duration(currentBookingStartTime.diff(prevBookingEndTime));
+    // Calculate gaps between consecutive bookings within the same day
+const gapItems: { id: string, group: string, title: string, start_time: moment.Moment, end_time: moment.Moment }[] = [];
+filteredBookings.forEach((booking, index) => {
+  if (index > 0) {
+    const prevBookingEndTime = moment(filteredBookings[index - 1].endtime);
+    const currentBookingStartTime = moment(booking.starttime);
+    
+    // Check if the previous booking and the current booking are on the same day
+    if (prevBookingEndTime.isSame(currentBookingStartTime, 'day')) {
+      const gapDuration = moment.duration(currentBookingStartTime.diff(prevBookingEndTime));
 
-        if (gapDuration.asMilliseconds() > 0) {
-          // Add a dummy item representing the gap
-          gapItems.push({
-            id: `gap-${index}`, // You can use a unique ID for gap items
-            group: booking.Resource.bookableresourceid,
-            title: 'Gap', // Title for gap items
-            start_time: prevBookingEndTime,
-            end_time: currentBookingStartTime,
-          });
-        }
+      if (gapDuration.asMilliseconds() > 0) {
+        // Add a dummy item representing the gap
+        gapItems.push({
+          id: `gap-${index}`, // You can use a unique ID for gap items
+          group: booking.Resource.bookableresourceid,
+          title: 'Gap', // Title for gap items
+          start_time: prevBookingEndTime,
+          end_time: currentBookingStartTime,
+        });
       }
-    });
+    }
+  }
+});
+
 
     // Combine bookings and gap items
     const items = filteredBookings.map((booking, index) => ({
@@ -77,7 +83,7 @@ const ScheduleDashboard: React.FC<{
     return (
       <div style={{ marginTop: "20px", marginLeft: "50px", marginRight: "50px" }}>
         <Grid container spacing={2} alignItems="center">
-          <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Grid item xs={12} sm={6} md={4} lg={3}> {/* Adjust for middle position use this => "style={{ margin: '0 auto' }}"*/}
             <FormControl style={{ width: '150px', marginTop: '20px', marginBottom: '20px' }}>
               <InputLabel id="day-select-label" style={{ fontFamily: 'Calibri' }}>Select Day</InputLabel>
               <Select

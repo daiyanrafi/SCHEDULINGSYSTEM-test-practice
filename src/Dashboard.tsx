@@ -29,24 +29,22 @@ const ScheduleDashboard: React.FC<{
       setEndDate(date);
     };
 
-    // Filtering bookings based on selected day
     // Filtering bookings based on selected day and date range
-const filteredBookings = bookings.filter(booking => {
-  const bookingDate = moment(booking.starttime);
-  const bookingStartTime = bookingDate.startOf('day').toDate();
-  const bookingEndTime = bookingDate.endOf('day').toDate();
-  return (selectedDay ? bookingDate.format('dddd').toLowerCase() === selectedDay.toLowerCase() : true) &&
-    (startDate && endDate ? (bookingStartTime >= startDate && bookingEndTime <= endDate) : true);
-});
+    const filteredBookings = bookings.filter(booking => {
+      const bookingDate = moment(booking.starttime);
+      const bookingStartTime = bookingDate.startOf('day').toDate();
+      const bookingEndTime = bookingDate.endOf('day').toDate();
+      return (selectedDay ? bookingDate.format('dddd').toLowerCase() === selectedDay.toLowerCase() : true) &&
+        (startDate && endDate ? (bookingStartTime >= startDate && bookingEndTime <= endDate) : true);
+    });
 
 
     // Filtering bookings based on selected date range
-// Filtering bookings based on selected date range
-const filteredDateRangeBookings = filteredBookings.filter(booking => {
-  const bookingStartTime = moment(booking.starttime).toDate();
-  const bookingEndTime = moment(booking.endtime).toDate();
-  return startDate && endDate ? (bookingStartTime >= startDate && bookingEndTime <= endDate) : true;
-});
+    const filteredDateRangeBookings = filteredBookings.filter(booking => {
+      const bookingStartTime = moment(booking.starttime).toDate();
+      const bookingEndTime = moment(booking.endtime).toDate();
+      return startDate && endDate ? (bookingStartTime >= startDate && bookingEndTime <= endDate) : true;
+    });
 
     const groups = resources.map(resource => ({
       id: resource.bookableresourceid,

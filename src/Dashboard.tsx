@@ -5,7 +5,6 @@ import moment from 'moment';
 import { MenuItem, Select, FormControl, InputLabel, Grid } from '@material-ui/core';
 import { DatePicker } from "@mui/x-date-pickers";
 
-
 const ScheduleDashboard: React.FC<{
   resources: any[];
   bookings: any[];
@@ -38,20 +37,29 @@ const ScheduleDashboard: React.FC<{
         (startDate && endDate ? (bookingStartTime >= startDate && bookingEndTime <= endDate) : true);
     });
 
+    // Calculate gaps between consecutive bookings
+    const gapItems: { id: string, group: string, title: string, start_time: moment.Moment, end_time: moment.Moment }[] = [];
+    filteredBookings.forEach((booking, index) => {
+      if (index > 0) {
+        const prevBookingEndTime = moment(filteredBookings[index - 1].endtime);
+        const currentBookingStartTime = moment(booking.starttime);
+        const gapDuration = moment.duration(currentBookingStartTime.diff(prevBookingEndTime));
 
-    // Filtering bookings based on selected date range
-    const filteredDateRangeBookings = filteredBookings.filter(booking => {
-      const bookingStartTime = moment(booking.starttime).toDate();
-      const bookingEndTime = moment(booking.endtime).toDate();
-      return startDate && endDate ? (bookingStartTime >= startDate && bookingEndTime <= endDate) : true;
+        if (gapDuration.asMilliseconds() > 0) {
+          // Add a dummy item representing the gap
+          gapItems.push({
+            id: `gap-${index}`, // You can use a unique ID for gap items
+            group: booking.Resource.bookableresourceid,
+            title: 'Gap', // Title for gap items
+            start_time: prevBookingEndTime,
+            end_time: currentBookingStartTime,
+          });
+        }
+      }
     });
 
-    const groups = resources.map(resource => ({
-      id: resource.bookableresourceid,
-      title: resource.name,
-    }));
-
-    const items = filteredDateRangeBookings.map((booking, index) => ({
+    // Combine bookings and gap items
+    const items = filteredBookings.map((booking, index) => ({
       id: index,
       group: booking.Resource.bookableresourceid,
       title: booking.name,
@@ -59,10 +67,17 @@ const ScheduleDashboard: React.FC<{
       end_time: moment(booking.endtime),
     }));
 
+    const allItems = [...items, ...gapItems];
+
+    const groups = resources.map(resource => ({
+      id: resource.bookableresourceid,
+      title: resource.name,
+    }));
+
     return (
       <div style={{ marginTop: "20px", marginLeft: "50px", marginRight: "50px" }}>
         <Grid container spacing={2} alignItems="center">
-          <Grid item xs={12} sm={6} md={4} lg={3} > {/* Adjust for middle position use this => "style={{ margin: '0 auto' }}"*/}
+          <Grid item xs={12} sm={6} md={4} lg={3}>
             <FormControl style={{ width: '150px', marginTop: '20px', marginBottom: '20px' }}>
               <InputLabel id="day-select-label" style={{ fontFamily: 'Calibri' }}>Select Day</InputLabel>
               <Select
@@ -98,18 +113,15 @@ const ScheduleDashboard: React.FC<{
               format="yyyy-MM-dd"
             />
           </Grid>
-
         </Grid>
         <Timeline
           groups={groups}
-          items={items}
+          items={allItems}
           defaultTimeStart={moment("2024-02-25")}
           defaultTimeEnd={moment("2024-04-12")}
         />
       </div>
     );
-
-
-  };
+};
 
 export default ScheduleDashboard;

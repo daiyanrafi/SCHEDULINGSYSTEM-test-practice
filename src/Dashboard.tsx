@@ -39,29 +39,29 @@ const ScheduleDashboard: React.FC<{
     });
 
     // Calculate gaps between consecutive bookings within the same day
-const gapItems: { id: string, group: string, title: string, start_time: moment.Moment, end_time: moment.Moment }[] = [];
-filteredBookings.forEach((booking, index) => {
-  if (index > 0) {
-    const prevBookingEndTime = moment(filteredBookings[index - 1].endtime);
-    const currentBookingStartTime = moment(booking.starttime);
-    
-    // Check if the previous booking and the current booking are on the same day
-    if (prevBookingEndTime.isSame(currentBookingStartTime, 'day')) {
-      const gapDuration = moment.duration(currentBookingStartTime.diff(prevBookingEndTime));
+    const gapItems: { id: string, group: string, title: string, start_time: moment.Moment, end_time: moment.Moment }[] = [];
+    filteredBookings.forEach((booking, index) => {
+      if (index > 0) {
+        const prevBookingEndTime = moment(filteredBookings[index - 1].endtime);
+        const currentBookingStartTime = moment(booking.starttime);
 
-      if (gapDuration.asMilliseconds() > 0) {
-        // Add a dummy item representing the gap
-        gapItems.push({
-          id: `gap-${index}`, // You can use a unique ID for gap items
-          group: booking.Resource.bookableresourceid,
-          title: 'Gap', // Title for gap items
-          start_time: prevBookingEndTime,
-          end_time: currentBookingStartTime,
-        });
+        // Check if the previous booking and the current booking are on the same day
+        if (prevBookingEndTime.isSame(currentBookingStartTime, 'day')) {
+          const gapDuration = moment.duration(currentBookingStartTime.diff(prevBookingEndTime));
+
+          if (gapDuration.asMilliseconds() > 0) {
+            // Add a dummy item representing the gap
+            gapItems.push({
+              id: `gap-${index}`, // You can use a unique ID for gap items
+              group: booking.Resource.bookableresourceid,
+              title: 'Gap', // Title for gap items
+              start_time: prevBookingEndTime,
+              end_time: currentBookingStartTime,
+            });
+          }
+        }
       }
-    }
-  }
-});
+    });
 
 
     // Combine bookings and gap items
@@ -83,6 +83,22 @@ filteredBookings.forEach((booking, index) => {
     return (
       <div style={{ marginTop: "20px", marginLeft: "50px", marginRight: "50px" }}>
         <Grid container spacing={2} alignItems="center">
+          <Grid item>
+            <DatePicker
+              label="Start Date"
+              value={startDate}
+              onChange={handleStartDateChange}
+              format="yyyy-MM-dd"
+            />
+          </Grid>
+          <Grid item>
+            <DatePicker
+              label="End Date"
+              value={endDate}
+              onChange={handleEndDateChange}
+              format="yyyy-MM-dd"
+            />
+          </Grid>
           <Grid item xs={12} sm={6} md={4} lg={3}> {/* Adjust for middle position use this => "style={{ margin: '0 auto' }}"*/}
             <FormControl style={{ width: '150px', marginTop: '20px', marginBottom: '20px' }}>
               <InputLabel id="day-select-label" style={{ fontFamily: 'Calibri' }}>Select Day</InputLabel>
@@ -102,23 +118,6 @@ filteredBookings.forEach((booking, index) => {
               </Select>
             </FormControl>
           </Grid>
-
-          <Grid item>
-            <DatePicker
-              label="Start Date"
-              value={startDate}
-              onChange={handleStartDateChange}
-              format="yyyy-MM-dd"
-            />
-          </Grid>
-          <Grid item>
-            <DatePicker
-              label="End Date"
-              value={endDate}
-              onChange={handleEndDateChange}
-              format="yyyy-MM-dd"
-            />
-          </Grid>
         </Grid>
         <Timeline
           groups={groups}
@@ -128,6 +127,6 @@ filteredBookings.forEach((booking, index) => {
         />
       </div>
     );
-};
+  };
 
 export default ScheduleDashboard;

@@ -3,9 +3,6 @@ import Timeline from 'react-calendar-timeline';
 import 'react-calendar-timeline/lib/Timeline.css';
 import moment from 'moment';
 import { MenuItem, Select, FormControl, InputLabel, Grid } from '@material-ui/core';
-// import { DatePicker } from "@mui/x-date-pickers";
-
-import 'react-calendar-timeline/lib/Timeline.css';
 import { DatePicker } from "@mui/x-date-pickers";
 
 
@@ -33,16 +30,23 @@ const ScheduleDashboard: React.FC<{
     };
 
     // Filtering bookings based on selected day
-    const filteredBookings = bookings.filter(booking => {
-      const bookingDate = moment(booking.starttime);
-      return selectedDay ? bookingDate.format('dddd').toLowerCase() === selectedDay.toLowerCase() : true;
-    });
+    // Filtering bookings based on selected day and date range
+const filteredBookings = bookings.filter(booking => {
+  const bookingDate = moment(booking.starttime);
+  const bookingStartTime = bookingDate.startOf('day').toDate();
+  const bookingEndTime = bookingDate.endOf('day').toDate();
+  return (selectedDay ? bookingDate.format('dddd').toLowerCase() === selectedDay.toLowerCase() : true) &&
+    (startDate && endDate ? (bookingStartTime >= startDate && bookingEndTime <= endDate) : true);
+});
+
 
     // Filtering bookings based on selected date range
-    const filteredDateRangeBookings = filteredBookings.filter(booking => {
-      const bookingDate = moment(booking.starttime);
-      return startDate && endDate ? bookingDate.isBetween(startDate, endDate, 'day', '[]') : true;
-    });
+// Filtering bookings based on selected date range
+const filteredDateRangeBookings = filteredBookings.filter(booking => {
+  const bookingStartTime = moment(booking.starttime).toDate();
+  const bookingEndTime = moment(booking.endtime).toDate();
+  return startDate && endDate ? (bookingStartTime >= startDate && bookingEndTime <= endDate) : true;
+});
 
     const groups = resources.map(resource => ({
       id: resource.bookableresourceid,
@@ -60,7 +64,7 @@ const ScheduleDashboard: React.FC<{
     return (
       <div style={{ marginTop: "20px", marginLeft: "50px", marginRight: "50px" }}>
         <Grid container spacing={2} alignItems="center">
-          <Grid item xs={12} sm={6} md={4} lg={3} > {/* Adjust the size and centering of the Grid item "style={{ margin: '0 auto' }}"*/}
+          <Grid item xs={12} sm={6} md={4} lg={3} > {/* Adjust for middle position use this => "style={{ margin: '0 auto' }}"*/}
             <FormControl style={{ width: '150px', marginTop: '20px', marginBottom: '20px' }}>
               <InputLabel id="day-select-label" style={{ fontFamily: 'Calibri' }}>Select Day</InputLabel>
               <Select
@@ -81,22 +85,22 @@ const ScheduleDashboard: React.FC<{
           </Grid>
 
           <Grid item>
-        <DatePicker
-          label="Start Date"
-          value={startDate}
-          onChange={handleStartDateChange}
-          format="yyyy-MM-dd" 
-        />
-      </Grid>
-      <Grid item>
-        <DatePicker
-          label="End Date"
-          value={endDate}
-          onChange={handleEndDateChange}
-          format="yyyy-MM-dd" 
-        />
-      </Grid>
-      
+            <DatePicker
+              label="Start Date"
+              value={startDate}
+              onChange={handleStartDateChange}
+              format="yyyy-MM-dd"
+            />
+          </Grid>
+          <Grid item>
+            <DatePicker
+              label="End Date"
+              value={endDate}
+              onChange={handleEndDateChange}
+              format="yyyy-MM-dd"
+            />
+          </Grid>
+
         </Grid>
         <Timeline
           groups={groups}

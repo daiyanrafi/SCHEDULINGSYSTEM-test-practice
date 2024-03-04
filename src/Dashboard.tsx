@@ -5,7 +5,6 @@ import moment from 'moment';
 import { MenuItem, Select, FormControl, InputLabel, Grid } from '@material-ui/core';
 import { DatePicker } from "@mui/x-date-pickers";
 
-
 const ScheduleDashboard: React.FC<{
   resources: any[];
   bookings: any[];
@@ -39,8 +38,7 @@ const ScheduleDashboard: React.FC<{
     });
 
     // Calculate gaps between consecutive bookings within the same day
-    const gapItems: { id: string, group: string, title: string, start_time: moment.Moment, end_time: moment.Moment }[] = [];
-    filteredBookings.forEach((booking, index) => {
+    const gapItems = filteredBookings.reduce((accumulator, booking, index) => {
       if (index > 0) {
         const prevBookingEndTime = moment(filteredBookings[index - 1].endtime);
         const currentBookingStartTime = moment(booking.starttime);
@@ -50,28 +48,39 @@ const ScheduleDashboard: React.FC<{
           const gapDuration = moment.duration(currentBookingStartTime.diff(prevBookingEndTime));
 
           if (gapDuration.asMilliseconds() > 0) {
-            // Add a dummy item representing the gap
-            gapItems.push({
+             // Add a dummy item representing the gap
+            accumulator.push({
               id: `gap-${index}`, // You can use a unique ID for gap items
               group: booking.Resource.bookableresourceid,
               title: 'Gap', // Title for gap items
               start_time: prevBookingEndTime,
               end_time: currentBookingStartTime,
+              itemProps: {
+                style: {
+                  // background: randomColor({ luminosity: "light", seed: booking.name }) // Specify your custom color for gap items here
+                  background: 'green' // Specify your custom color for gap items here
+                }
+              }
             });
           }
         }
       }
-    });
+      return accumulator;
+    }, []);
 
-
-    // Combine bookings and gap items
     const items = filteredBookings.map((booking, index) => ({
       id: index,
       group: booking.Resource.bookableresourceid,
       title: booking.name,
       start_time: moment(booking.starttime),
       end_time: moment(booking.endtime),
+      // itemProps: {
+      //   style: {
+      //     background: randomColor({ luminosity: "light", seed: booking.name })
+      //   }
+      // }
     }));
+    
 
     const allItems = [...items, ...gapItems];
 
@@ -128,8 +137,8 @@ const ScheduleDashboard: React.FC<{
         <Timeline
           groups={groups}
           items={allItems}
-          defaultTimeStart={moment("2024-02-25")}
-          defaultTimeEnd={moment("2024-04-12")}
+          defaultTimeStart={moment("2024-02-28 08:00:00")}
+          defaultTimeEnd={moment("2024-02-29 08:00:00")}
         />
       </div>
     );

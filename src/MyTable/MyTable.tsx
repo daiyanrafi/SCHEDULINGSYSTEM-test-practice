@@ -13,6 +13,7 @@ import {
   DialogContent,
   DialogActions,
   Button,
+  Grid
 } from "@mui/material";
 import data from "../data/table.json";
 import IconMenu from "../components/IconMenu"; // Import the IconMenu component from the external file
@@ -90,6 +91,7 @@ const MyTable = () => {
   const [selectedRow, setSelectedRow] = useState<Row | null>(null);
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedButton, setSelectedButton] = useState<string | null>(null);
   const tableRef = useRef<HTMLDivElement>(null);
 
   const getBackgroundColor = (category: string) => {
@@ -139,11 +141,47 @@ const MyTable = () => {
     setSelectedRow(null); // Close the menu
   };
 
+  const handleButtonClick = (buttonName: string) => {
+    setSelectedButton(buttonName);
+    console.log("Button clicked:", buttonName);
+  };
+
   return (
-    <div
-      style={{ marginRight: "50px", marginLeft: "50px", height: "1000px" }}
-      ref={tableRef}
-    >
+    <div style={{ marginRight: "50px", marginLeft: "50px", height: "1000px", marginTop: "30px" }} ref={tableRef}>
+      <Grid container justifyContent="flex-end" spacing={2} style={{ marginBottom: "20px" }}>
+        <Grid item>
+          <Button
+            variant={selectedButton === "Button 1" ? "contained" : "outlined"}
+            onClick={() => handleButtonClick("Button 1")}
+          >
+            Button 1
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button
+            variant={selectedButton === "Button 2" ? "contained" : "outlined"}
+            onClick={() => handleButtonClick("Button 2")}
+          >
+            Button 2
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button
+            variant={selectedButton === "Button 3" ? "contained" : "outlined"}
+            onClick={() => handleButtonClick("Button 3")}
+          >
+            Button 3
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button
+            variant={selectedButton === "Button 4" ? "contained" : "outlined"}
+            onClick={() => handleButtonClick("Button 4")}
+          >
+            Button 4
+          </Button>
+        </Grid>
+      </Grid>
       <TableContainer component={Paper} style={{ marginTop: "20px" }}>
         <Table aria-label="customized table">
           <TableHead>
@@ -161,7 +199,7 @@ const MyTable = () => {
               <StyledTableCell>Funding End</StyledTableCell>
               <StyledTableCell>Email Address</StyledTableCell>
               <StyledTableCell>Mobile Number</StyledTableCell>
-            </TableRow>
+              </TableRow>
           </TableHead>
           <TableBody>
             {data.map((row, index) => (
@@ -200,15 +238,15 @@ const MyTable = () => {
       </TableContainer>
       {selectedRow && (
         <StyledMenu
-        anchorReference="anchorPosition"
-        anchorPosition={{ top: menuPosition.y, left: menuPosition.x }}
-        open={Boolean(selectedRow)}
-        onClose={() => setSelectedRow(null)}
-      >
-        <MenuItem onClick={handleEditClick} disableRipple>
-          <EditIcon />
-          {selectedRow.clientName}
-        </MenuItem>
+          anchorReference="anchorPosition"
+          anchorPosition={{ top: menuPosition.y, left: menuPosition.x }}
+          open={Boolean(selectedRow)}
+          onClose={() => setSelectedRow(null)}
+        >
+          <MenuItem onClick={handleEditClick} disableRipple>
+            <EditIcon />
+            {selectedRow.clientName}
+          </MenuItem>
           <MenuItem onClick={() => setSelectedRow(null)} disableRipple>
             <FileCopyIcon />
             Duplicate

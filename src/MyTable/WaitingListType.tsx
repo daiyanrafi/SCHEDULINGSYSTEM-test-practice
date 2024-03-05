@@ -175,25 +175,39 @@ const WaitingListType: React.FC<IProps> = (props) => {
         }
     };
 
+    // const handleTypeComboBoxChange = (event: React.FormEvent<IComboBox>, option?: IComboBoxOption, index?: number, value?: string): void => {
+    //     if (option) {
+    //         console.log('Type ComboBox selected option:', option);
+    //         const selectedType = types[index as number];
+    //         console.log('Selected type:', selectedType);
+    //     }
+    // };
+
+
     const handleTypeComboBoxChange = (event: React.FormEvent<IComboBox>, option?: IComboBoxOption, index?: number, value?: string): void => {
         if (option) {
             console.log('Type ComboBox selected option:', option);
 
-            // Get the selected type from the options using the index
-            const selectedType = types[index as number]; // Assuming the index corresponds to the selected type in the types array
+             // Get the selected type from the options using the index
+             const selectedType = types[index as number]; // Assuming the index corresponds to the selected type in the types array
 
-            // Now you can use the selectedType as needed
+             // Now you can use the selectedType as needed
             console.log('Selected type:', selectedType);
         }
     };
 
-
-
-
+    const hardcodedOptions: IComboBoxOption[] = [
+        { key: 'option1', text: 'Option 1' },
+        { key: 'option2', text: 'Option 2' },
+        { key: 'option3', text: 'Option 3' },
+    ];
+    const allOptions = [...hardcodedOptions, ...types];
+    console.log('All options:', allOptions);
 
     const _dismissPanel = () => {
         setDialogOpen(false);
     }
+    
 
     const onSave = () => {
         setDialogOpen(false);
@@ -314,11 +328,10 @@ const WaitingListType: React.FC<IProps> = (props) => {
                     <div>
                         <ComboBox
                             multiSelect
-                            options={types}
-                            placeholder="Select types"
+                            options={allOptions}
+                            placeholder="Select type"
                             onChange={handleTypeComboBoxChange}
                         />
-
 
                         <br />
                         <PrimaryButton onClick={handleFinishClick} styles={buttonStyles}>
@@ -354,10 +367,37 @@ const WaitingListType: React.FC<IProps> = (props) => {
           </MenuItem> */}
                 </StyledMenu>
             )}
+            {/* <Dialog open={dialogOpen} onClose={handleCloseDialog}>
+        <DialogTitle>Row Information</DialogTitle>
+        <DialogContent>
+          <div>
+            <p><strong>Client Name:</strong> {selectedRow?.name}</p>
+            <p><strong>Age:</strong> {selectedRow?.age}</p>
+            <p><strong>Opened:</strong> {selectedRow?.opened}</p>
+            <p><strong>Days:</strong> {selectedRow?.days}</p>
+            <p><strong>Priority:</strong> {selectedRow?.priority}</p>
+            <p><strong>Site:</strong> {selectedRow?.site}</p>
+            <p><strong>Type:</strong> {selectedRow?.type}</p>
+            <p><strong>Service Category:</strong> {selectedRow?.serviceCategory}</p>
+            <p><strong>Funding Source:</strong> {selectedRow?.fundingSource}</p>
+            <p><strong>Funding Start:</strong> {selectedRow?.fundingStart}</p>
+            <p><strong>Funding End:</strong> {selectedRow?.fundingEnd}</p>
+            <p><strong>Email Address:</strong> {selectedRow?.emailAddress}</p>
+            <p><strong>Mobile Number:</strong> {selectedRow?.mobileNumber}</p>
+          </div>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog> */}
+      
             <Panel
                 isOpen={dialogOpen}
                 onDismiss={_dismissPanel}
                 type={PanelType.smallFixedFar}
+                //customWidth='1080'
                 closeButtonAriaLabel="Close"
                 headerText='Edit Waitlist'
             >
@@ -377,6 +417,7 @@ const WaitingListType: React.FC<IProps> = (props) => {
                         Save
                     </PrimaryButton>
                     <DefaultButton onClick={handleCloseDialog}>Cancel</DefaultButton>
+
                 </div>
             </Panel>
         </div>

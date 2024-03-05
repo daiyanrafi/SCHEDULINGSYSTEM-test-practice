@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { styled, alpha } from "@mui/material/styles";
-import { Checkbox, DatePicker, DefaultButton, Dropdown, IDropdownOption, Panel, PanelType, PrimaryButton, TextField, Toggle } from "@fluentui/react";
+import { DefaultButton, Dropdown, IDropdownOption, Panel, PanelType, PrimaryButton } from "@fluentui/react";
 import {
   Table,
   TableHead,
@@ -9,21 +9,21 @@ import {
   TableCell,
   TableContainer,
   Paper,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
+  // Dialog,
+  // DialogTitle,
+  // DialogContent,
+  // DialogActions,
+  // Button,
   Grid,
 } from "@mui/material";
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import EditIcon from '@mui/icons-material/Edit';
 import Divider from '@mui/material/Divider';
-import ArchiveIcon from '@mui/icons-material/Archive';
+// import ArchiveIcon from '@mui/icons-material/Archive';
 import FileCopyIcon from '@mui/icons-material/Send';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+// import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+// import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 interface Row {
   name: string;
@@ -91,7 +91,7 @@ const WaitingListType: React.FC<IProps> = (props) => {
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [categories, setCategories] = useState<any[]>([]);
-  const [category, setCategory] = useState<any[]>([]);
+  // const [category, setCategory] = useState<any[]>([]);
   const [types, setTypes] = useState<any[]>([]);
   const tableRef = useRef<HTMLDivElement>(null);
   const [selectedButton, setSelectedButton] = useState<string | null>(null);
@@ -142,11 +142,10 @@ const WaitingListType: React.FC<IProps> = (props) => {
     setDialogOpen(true);
   };
 
-  const oncategorychange = (evt: any, fieldname: string, value?: any) => {
-    console.log(value);
-    alert('hello')
-  }
-
+  // const oncategorychange = (evt: any, fieldname: string, value?: any) => {
+  //   console.log(value);
+  //   alert('hello')
+  // }
 
   const handleCloseDialog = () => {
     setDialogOpen(false);
@@ -193,36 +192,37 @@ const WaitingListType: React.FC<IProps> = (props) => {
     >
       <Grid container justifyContent="flex-end" spacing={2} style={{ marginBottom: "20px" }}>
         <Grid item>
-          <Button
-            variant={selectedButton === "Button 1" ? "contained" : "outlined"}
+          <PrimaryButton
+            styles={buttonStyles}
             onClick={() => handleButtonClick("Button 1")}
-          >
-            Button 1
-          </Button>
+            text="Button 1"
+            checked={selectedButton === "Button 1"}
+          />
         </Grid>
         <Grid item>
-          <Button
-            variant={selectedButton === "Button 2" ? "contained" : "outlined"}
+          <PrimaryButton
+            styles={buttonStyles}
             onClick={() => handleButtonClick("Button 2")}
-          >
-            Button 2
-          </Button>
+            text="Button 2"
+            checked={selectedButton === "Button 2"}
+          />
         </Grid>
         <Grid item>
-          <Button
-            variant={selectedButton === "Button 3" ? "contained" : "outlined"}
+          <PrimaryButton
+            styles={buttonStyles}
             onClick={() => handleButtonClick("Button 3")}
-          >
-            Button 3
-          </Button>
+            text="Button 3"
+            checked={
+              selectedButton === "Button 3"}
+          />
         </Grid>
         <Grid item>
-          <Button
-            variant={selectedButton === "Button 4" ? "contained" : "outlined"}
+          <PrimaryButton
+            styles={buttonStyles}
             onClick={() => handleButtonClick("Button 4")}
-          >
-            Button 4
-          </Button>
+            text="Button 4"
+            checked={selectedButton === "Button 4"}
+          />
         </Grid>
       </Grid>
       <TableContainer component={Paper} style={{ marginTop: "20px" }}>
@@ -296,7 +296,7 @@ const WaitingListType: React.FC<IProps> = (props) => {
             Send Service In-take from
           </MenuItem>
           <Divider sx={{ my: 0.5 }} />
-          {/* <MenuItem onClick={() => setSelectedRow(null)} disableRipple>
+           {/* <MenuItem onClick={() => setSelectedRow(null)} disableRipple>
             <ArchiveIcon />
             Archive
           </MenuItem>
@@ -333,32 +333,31 @@ const WaitingListType: React.FC<IProps> = (props) => {
       </Dialog> */}
 
       <Panel
-          isOpen={dialogOpen}
-          onDismiss={_dismissPanel}
-          type={PanelType.smallFixedFar}
-          //customWidth='1080'
-          closeButtonAriaLabel="Close"
-          headerText='Edit Waitlist'
-        >
-         <div>
-            <Dropdown
-              label='Category'
-              options={categories}
-              onChange={handleDropdownChange('category')}
-            />
-            <Dropdown
-              label='Type'
-              options={types}
-              onChange={handleDropdownChange('type')}
-            />
+        isOpen={dialogOpen}
+        onDismiss={_dismissPanel}
+        type={PanelType.smallFixedFar}
+        closeButtonAriaLabel="Close"
+        headerText='Edit Waitlist'
+      >
+        <div>
+          <Dropdown
+            label='Category'
+            options={categories}
+            onChange={handleDropdownChange('category')}
+          />
+          <Dropdown
+            label='Type'
+            options={types}
+            onChange={handleDropdownChange('type')}
+          />
           <br />
           <PrimaryButton onClick={onSave} styles={buttonStyles}>
-          Save
-        </PrimaryButton>
-        <DefaultButton onClick={handleCloseDialog}>Cancel</DefaultButton>
+            Save
+          </PrimaryButton>
+          <DefaultButton onClick={handleCloseDialog}>Cancel</DefaultButton>
 
-          </div>
-        </Panel>
+        </div>
+      </Panel>
     </div>
   );
 };

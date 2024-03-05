@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { styled, alpha } from "@mui/material/styles";
-import { DefaultButton, Dropdown, IDropdownOption, Panel, PanelType, PrimaryButton, ComboBox } from "@fluentui/react";
+import { DefaultButton, Dropdown, IDropdownOption, Panel, PanelType, PrimaryButton, ComboBox, IComboBox, IComboBoxOption } from "@fluentui/react";
 import {
     Table,
     TableHead,
@@ -175,6 +175,22 @@ const WaitingListType: React.FC<IProps> = (props) => {
         }
     };
 
+    const handleTypeComboBoxChange = (event: React.FormEvent<IComboBox>, option?: IComboBoxOption, index?: number, value?: string): void => {
+        if (option) {
+            console.log('Type ComboBox selected option:', option);
+
+            // Get the selected type from the options using the index
+            const selectedType = types[index as number]; // Assuming the index corresponds to the selected type in the types array
+
+            // Now you can use the selectedType as needed
+            console.log('Selected type:', selectedType);
+        }
+    };
+
+
+
+
+
     const _dismissPanel = () => {
         setDialogOpen(false);
     }
@@ -300,8 +316,10 @@ const WaitingListType: React.FC<IProps> = (props) => {
                             multiSelect
                             options={types}
                             placeholder="Select types"
-                            onChange={() => { }} // Implement your onChange handler
+                            onChange={handleTypeComboBoxChange}
                         />
+
+
                         <br />
                         <PrimaryButton onClick={handleFinishClick} styles={buttonStyles}>
                             Finish
@@ -371,6 +389,3 @@ interface IProps {
     data: any;
     waitlisttypes: any;
 }
-
-
-//////////////////////////////////////////////

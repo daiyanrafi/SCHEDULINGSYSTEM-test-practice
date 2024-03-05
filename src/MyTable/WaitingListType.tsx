@@ -188,7 +188,7 @@ const WaitingListType: React.FC<IProps> = (props) => {
 
   return (
     <div
-      style={{ marginRight: "50px", marginLeft: "50px", height: "1000px" }}
+      style={{ marginRight: "50px", marginLeft: "50px", height: "1000px", marginTop: "30px" }}
       ref={tableRef}
     >
       <Grid container justifyContent="flex-end" spacing={2} style={{ marginBottom: "20px" }}>

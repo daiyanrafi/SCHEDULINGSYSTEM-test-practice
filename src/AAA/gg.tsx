@@ -9,21 +9,15 @@ import {
     TableCell,
     TableContainer,
     Paper,
-    // Dialog,
-    // DialogTitle,
-    // DialogContent,
-    // DialogActions,
-    // Button,
     Grid,
 } from "@mui/material";
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import EditIcon from '@mui/icons-material/Edit';
 import Divider from '@mui/material/Divider';
-// import ArchiveIcon from '@mui/icons-material/Archive';
+
 import FileCopyIcon from '@mui/icons-material/Send';
-// import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-// import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+
 
 interface Row {
     name: string;
@@ -94,7 +88,7 @@ const WaitingListType: React.FC<IProps> = (props) => {
     const [types, setTypes] = useState<any[]>([]);
     const tableRef = useRef<HTMLDivElement>(null);
     const [selectedButton, setSelectedButton] = useState<string | null>(null);
-    const [showTypePopup, setShowTypePopup] = useState(false); // State to control showing type popup
+    const [showTypePopup, setShowTypePopup] = useState(false);
 
     const getBackgroundColor = (category: string) => {
         switch (category) {
@@ -142,18 +136,13 @@ const WaitingListType: React.FC<IProps> = (props) => {
         setDialogOpen(true);
     };
 
-    // const oncategorychange = (evt: any, fieldname: string, value?: any) => {
-    //   console.log(value);
-    //   alert('hello')
-    // }
-
     const handleCloseDialog = () => {
         setDialogOpen(false);
     };
 
     const handleEditClick = () => {
         alert(`Edit button was clicked`);
-        setSelectedRow(null); // Close the menu
+        setSelectedRow(null);
     };
 
     const handleButtonClick = (buttonName: string) => {
@@ -300,7 +289,7 @@ const WaitingListType: React.FC<IProps> = (props) => {
                             multiSelect
                             options={types}
                             placeholder="Select types"
-                            onChange={() => { }} // Implement your onChange handler
+                            onChange={() => { }}
                         />
                         <br />
                         <PrimaryButton onClick={handleFinishClick} styles={buttonStyles}>
@@ -319,21 +308,12 @@ const WaitingListType: React.FC<IProps> = (props) => {
                     <MenuItem onClick={handleEditClick} disableRipple>
                         <EditIcon />
                         Edit
-                        {/* {selectedRow.name} */}
                     </MenuItem>
                     <MenuItem onClick={() => setSelectedRow(null)} disableRipple>
                         <FileCopyIcon />
                         Send Service In-take from
                     </MenuItem>
                     <Divider sx={{ my: 0.5 }} />
-                    {/* <MenuItem onClick={() => setSelectedRow(null)} disableRipple>
-            <ArchiveIcon />
-            Archive
-          </MenuItem>
-          <MenuItem onClick={() => setSelectedRow(null)} disableRipple>
-            <MoreHorizIcon />
-            More
-          </MenuItem> */}
                 </StyledMenu>
             )}
             <Panel
@@ -371,6 +351,3 @@ interface IProps {
     data: any;
     waitlisttypes: any;
 }
-
-
-//////////////////////////////////////////////

@@ -3,7 +3,8 @@ import ScheduleManagement from './schedule/ScheduleManagement';
 import scheduleData from './data/Alan.json';
 import ScheduleDashboard from './Dashboard';
 import DashboardParent from './DashboardParent';
-import MyTable from './MyTable/MyTable';
+import MyTable from './MyTable/WaitingListType';
+import WaitingListTypeContainer from './MyTable/WaitingListTypeContainter';
 
 function App() {
   return (
@@ -14,7 +15,9 @@ function App() {
 
         {/* <ScheduleDashboard /> */}
         {/* <ScheduleManagement schedule={scheduleData} /> */}
-        <MyTable/>
+        {/* <MyTable/> */}
+
+        <WaitingListTypeContainer/>
 
         {/* <DashboardParent/> */}
       </header>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { styled, alpha } from "@mui/material/styles";
+import { Checkbox, DatePicker, DefaultButton, Dropdown, IDropdownOption, Panel, PanelType, PrimaryButton, TextField, Toggle } from "@fluentui/react";
 import {
   Table,
   TableHead,
@@ -13,21 +14,19 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  Grid
+  Grid,
 } from "@mui/material";
-import data from "../data/table.json";
-import IconMenu from "../components/IconMenu"; // Import the IconMenu component from the external file
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import EditIcon from '@mui/icons-material/Edit';
 import Divider from '@mui/material/Divider';
 import ArchiveIcon from '@mui/icons-material/Archive';
-import FileCopyIcon from '@mui/icons-material/FileCopy';
+import FileCopyIcon from '@mui/icons-material/Send';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 interface Row {
-  clientName: string;
+  name: string;
   age: number;
   opened: string;
   days: number;
@@ -86,32 +85,43 @@ const StyledMenu = styled(Menu)(({ theme }) => ({
   },
 }));
 
-const MyTable = () => {
+const WaitingListType: React.FC<IProps> = (props) => {
   const [menuPosition, setMenuPosition] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
   const [selectedRow, setSelectedRow] = useState<Row | null>(null);
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [selectedButton, setSelectedButton] = useState<string | null>(null);
+  const [categories, setCategories] = useState<any[]>([]);
+  const [category, setCategory] = useState<any[]>([]);
+  const [types, setTypes] = useState<any[]>([]);
   const tableRef = useRef<HTMLDivElement>(null);
+  const [selectedButton, setSelectedButton] = useState<string | null>(null);
 
   const getBackgroundColor = (category: string) => {
     switch (category) {
       case "Occupational Therapy":
-        return "#f44336"; 
+        return "#f44336";
       case "Psychology":
-        return "#29b6f6"; 
+        return "#29b6f6";
       case "Behaviour Support":
-        return "#fbc02d"; 
-      case "Dietician":
-        return "#ba68c8"; 
+        return "#fbc02d";
+      case "Speech Pathology":
+        return "#ba68c8";
       case "Physiotherapy":
-        return "#f06292"; 
+        return "#f06292";
       default:
         return "#ffffff";
     }
   };
 
   useEffect(() => {
+    let categories: any[] = [];
+    props.waitlisttypes.map((cat: any) => {
+      if (!categories.find(ct => cat.sabs_category === ct.key)) {
+        categories.push({ key: cat.sabs_category, text: cat.sabs_category });
+      }
+    });
+
+    setCategories(categories);
     const handleOutsideClick = (event: MouseEvent) => {
       if (tableRef.current && !tableRef.current.contains(event.target as Node)) {
         setSelectedRow(null);
@@ -132,6 +142,12 @@ const MyTable = () => {
     setDialogOpen(true);
   };
 
+  const oncategorychange = (evt: any, fieldname: string, value?: any) => {
+    console.log(value);
+    alert('hello')
+  }
+
+
   const handleCloseDialog = () => {
     setDialogOpen(false);
   };
@@ -146,8 +162,35 @@ const MyTable = () => {
     console.log("Button clicked:", buttonName);
   };
 
+  const handleDropdownChange = (id: string) => (ev: React.FormEvent<HTMLDivElement>, option?: IDropdownOption): void => {
+    if (option) {
+      console.log(`Dropdown ${id} selected option:`, option);
+      if (id === 'category') {
+        const types = props.waitlisttypes.filter((wt: any) => wt.sabs_category === option.key);
+        types.map((typ: any) => {
+          typ.key = typ.sabs_type;
+          typ.text = typ.sabs_type;
+        })
+        setTypes(types);
+      }
+    }
+  };
+
+  const _dismissPanel = () => {
+    setDialogOpen(false);
+  }
+
+  const onSave = () => {
+    setDialogOpen(false);
+  }
+
+  const buttonStyles = { root: { marginRight: 8 } };
+
   return (
-    <div style={{ marginRight: "50px", marginLeft: "50px", height: "1000px", marginTop: "30px" }} ref={tableRef}>
+    <div
+      style={{ marginRight: "50px", marginLeft: "50px", height: "1000px" }}
+      ref={tableRef}
+    >
       <Grid container justifyContent="flex-end" spacing={2} style={{ marginBottom: "20px" }}>
         <Grid item>
           <Button
@@ -199,10 +242,10 @@ const MyTable = () => {
               <StyledTableCell>Funding End</StyledTableCell>
               <StyledTableCell>Email Address</StyledTableCell>
               <StyledTableCell>Mobile Number</StyledTableCell>
-              </TableRow>
+            </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((row, index) => (
+            {props.data.map((row: any, index: number) => (
               <StyledTableRow
                 key={index}
                 onContextMenu={(e) => handleRowRightClick(e, row)}
@@ -211,7 +254,7 @@ const MyTable = () => {
                 onMouseLeave={() => setHoveredRow(null)}
                 style={{ backgroundColor: hoveredRow === index ? "#f0f0f0" : "inherit" }}
               >
-                <TableCell>{row.clientName}</TableCell>
+                <TableCell>{row.name}</TableCell>
                 <TableCell>{row.age}</TableCell>
                 <TableCell>{row.opened}</TableCell>
                 <TableCell>{row.days}</TableCell>
@@ -245,28 +288,29 @@ const MyTable = () => {
         >
           <MenuItem onClick={handleEditClick} disableRipple>
             <EditIcon />
-            {selectedRow.clientName}
+            Edit
+            {/* {selectedRow.name} */}
           </MenuItem>
           <MenuItem onClick={() => setSelectedRow(null)} disableRipple>
             <FileCopyIcon />
-            Duplicate
+            Send Service In-take from
           </MenuItem>
           <Divider sx={{ my: 0.5 }} />
-          <MenuItem onClick={() => setSelectedRow(null)} disableRipple>
+          {/* <MenuItem onClick={() => setSelectedRow(null)} disableRipple>
             <ArchiveIcon />
             Archive
           </MenuItem>
           <MenuItem onClick={() => setSelectedRow(null)} disableRipple>
             <MoreHorizIcon />
             More
-          </MenuItem>
+          </MenuItem> */}
         </StyledMenu>
       )}
-      <Dialog open={dialogOpen} onClose={handleCloseDialog}>
+      {/* <Dialog open={dialogOpen} onClose={handleCloseDialog}>
         <DialogTitle>Row Information</DialogTitle>
         <DialogContent>
           <div>
-            <p><strong>Client Name:</strong> {selectedRow?.clientName}</p>
+            <p><strong>Client Name:</strong> {selectedRow?.name}</p>
             <p><strong>Age:</strong> {selectedRow?.age}</p>
             <p><strong>Opened:</strong> {selectedRow?.opened}</p>
             <p><strong>Days:</strong> {selectedRow?.days}</p>
@@ -286,9 +330,42 @@ const MyTable = () => {
             Close
           </Button>
         </DialogActions>
-      </Dialog>
+      </Dialog> */}
+
+      <Panel
+          isOpen={dialogOpen}
+          onDismiss={_dismissPanel}
+          type={PanelType.smallFixedFar}
+          //customWidth='1080'
+          closeButtonAriaLabel="Close"
+          headerText='Edit Waitlist'
+        >
+         <div>
+            <Dropdown
+              label='Category'
+              options={categories}
+              onChange={handleDropdownChange('category')}
+            />
+            <Dropdown
+              label='Type'
+              options={types}
+              onChange={handleDropdownChange('type')}
+            />
+          <br />
+          <PrimaryButton onClick={onSave} styles={buttonStyles}>
+          Save
+        </PrimaryButton>
+        <DefaultButton onClick={handleCloseDialog}>Cancel</DefaultButton>
+
+          </div>
+        </Panel>
     </div>
   );
 };
 
-export default MyTable;
+export default WaitingListType;
+
+interface IProps {
+  data: any;
+  waitlisttypes: any;
+}

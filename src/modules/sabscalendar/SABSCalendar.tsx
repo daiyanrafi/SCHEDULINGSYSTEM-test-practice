@@ -76,11 +76,12 @@ const SABSCalendar: React.FC<{ resources: any[]; bookings: any[]; isModalOpen: b
         sx={{
           fontFamily: "Calibri",
           border: "1px solid #E0E0E0",
-          padding: "2px 40px",
+          padding: "0px 40px",
           backgroundColor: "#FAFAFA",
           verticalAlign: "top",
-          height: "20px",
-          width: `${colspan * 100}px` // Adjust width based on colspan
+          // height: "10px",
+          // width: `${colspan * 40}px`
+          maxWidth: `${colspan * 20}px`  // Adjust width based on colspan
         }}
       >
         <ScheduleManagement
@@ -324,20 +325,21 @@ const SABSCalendar: React.FC<{ resources: any[]; bookings: any[]; isModalOpen: b
   }, []);
 
   return (
-    <div style={{ marginTop: "20px", marginLeft: "50px", marginRight: "50px" }}>
+    <div style={{ marginTop: "20px", marginLeft: "50px", marginRight: "50px", fontFamily: "Calibri" }}>
       <Table>
         <TableHead>
           <TableRow>
             <TableCell
               sx={{
-                fontFamily: "Calibri",
+                // fontFamily: "Calibri",
                 padding: "8px",
-                width: "120px",
-                textAlign: "center",
+                // width: "120px",
+                // textAlign: "center",
                 border: "1px solid #E0E0E0",
+                fontSize: 16
               }}
             >
-              <Typography variant="h3" sx={{ fontSize: 16 }}>
+              <Typography variant="h3" sx={{ fontSize: 23, fontFamily: "Calibri" }}>
                 Resource
               </Typography>
             </TableCell>
@@ -349,15 +351,16 @@ const SABSCalendar: React.FC<{ resources: any[]; bookings: any[]; isModalOpen: b
             <TableRow key={resource.bookableresourceid} sx={{ height: "10px" }}> {/* Adjust the height of the TableRow */}
               <TableCell
                 sx={{
-                  fontFamily: "Calibri",
-                  fontWeight: "bold",
+                  // fontFamily: "Calibri",
+                  // fontWeight: "bold",
                   // padding: "0px", // Adjust the padding to reduce height
                   borderLeft: "1px solid #E0E0E0",
                   textAlign: "center",
                   // height: "20px", // Adjust the height of the TableCell
+                  // width: '20px'
                 }}
               >
-                <Typography variant="h3" sx={{ fontSize: 16 }}>
+                <Typography variant="h3" sx={{ fontSize: 12 }}>
                   {resource.name}
                 </Typography>
               </TableCell>

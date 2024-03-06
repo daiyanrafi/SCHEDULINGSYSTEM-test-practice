@@ -134,11 +134,11 @@ const WaitingListType: React.FC<IProps> = (props) => {
     const handleRowRightClick = (e: React.MouseEvent<HTMLTableRowElement>, row: Row) => {
         e.preventDefault();
         setMenuPosition({ x: e.clientX, y: e.clientY });
-        setSelectedRow(row);
+        //setSelectedRow(row);
     };
 
     const handleRowLeftClick = (row: Row) => {
-        setSelectedRow(row);
+        //setSelectedRow(row);
         setDialogOpen(true);
     };
 
@@ -187,11 +187,10 @@ const WaitingListType: React.FC<IProps> = (props) => {
     const handleTypeComboBoxChange = (event: React.FormEvent<IComboBox>, option?: IComboBoxOption, index?: number, value?: string): void => {
         if (option) {
             console.log('Type ComboBox selected option:', option);
+            // Get the selected type from the options using the index
+            const selectedType = types[index as number]; // Assuming the index corresponds to the selected type in the types array
 
-             // Get the selected type from the options using the index
-             const selectedType = types[index as number]; // Assuming the index corresponds to the selected type in the types array
-
-             // Now you can use the selectedType as needed
+            // Now you can use the selectedType as needed
             console.log('Selected type:', selectedType);
         }
     };
@@ -207,7 +206,7 @@ const WaitingListType: React.FC<IProps> = (props) => {
     const _dismissPanel = () => {
         setDialogOpen(false);
     }
-    
+
 
     const onSave = () => {
         setDialogOpen(false);
@@ -228,38 +227,39 @@ const WaitingListType: React.FC<IProps> = (props) => {
             style={{ marginRight: "50px", marginLeft: "50px", height: "1000px", marginTop: "30px" }}
             ref={tableRef}
         >
-            <Grid container justifyContent="flex-end" spacing={2} style={{ marginBottom: "20px" }}>
+            <Grid container justifyContent="flex-end" spacing={1} style={{ marginBottom: "20px" }}>
                 <Grid item>
-                    <PrimaryButton
+                {/* <PrimaryButton
                         styles={buttonStyles}
                         onClick={() => handleButtonClick("Button 1")}
                         text="Button 1"
                         checked={selectedButton === "Button 1"}
+                    /> */}
+                    <PrimaryButton
+                        onClick={() => handleButtonClick("Enquiry List")}
+                        text="Enquiry List"
+                        style={{ backgroundColor: selectedButton === "Enquiry List" ? 'green' : undefined }}
                     />
                 </Grid>
                 <Grid item>
                     <PrimaryButton
-                        styles={buttonStyles}
-                        onClick={() => handleButtonClick("Button 2")}
-                        text="Button 
-                        2"
-                        checked={selectedButton === "Button 2"}
+                        onClick={() => handleButtonClick("Waiting Assessment")}
+                        text="Waiting Assessment"
+                        style={{ backgroundColor: selectedButton === "Waiting Assessment" ? 'green' : undefined }}
                     />
                 </Grid>
                 <Grid item>
                     <PrimaryButton
-                        styles={buttonStyles}
-                        onClick={() => handleButtonClick("Button 3")}
-                        text="Button 3"
-                        checked={selectedButton === "Button 3"}
+                        onClick={() => handleButtonClick("Booked Assessment")}
+                        text="Booked Assessment"
+                        style={{ backgroundColor: selectedButton === "Booked Assessment" ? 'green' : undefined }}
                     />
                 </Grid>
                 <Grid item>
                     <PrimaryButton
-                        styles={buttonStyles}
-                        onClick={() => handleButtonClick("Button 4")}
-                        text="Button 4"
-                        checked={selectedButton === "Button 4"}
+                        onClick={() => handleButtonClick("Active List")}
+                        text="Active List"
+                        style={{ backgroundColor: selectedButton === "Active List" ? 'green' : undefined }}
                     />
                 </Grid>
             </Grid>

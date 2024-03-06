@@ -17,9 +17,9 @@ function App() {
         {/* <ScheduleManagement schedule={scheduleData} /> */}
         {/* <MyTable/> */}
 
-        <WaitingListTypeContainer/>
+        {/* <WaitingListTypeContainer/> */}
 
-        {/* <DashboardParent/> */}
+        <DashboardParent/>
       </header>
     </div>
   );

@@ -11,7 +11,7 @@ interface ScheduleItem {
   };
 }
 
-const ScheduleManagement: React.FC<{
+const ScheduleManagementHorizontal: React.FC<{
   schedule: ScheduleItem[];
   onRowClick: (rowData: ScheduleItem) => void;
 }> = ({ schedule, onRowClick }) => {
@@ -37,13 +37,16 @@ const ScheduleManagement: React.FC<{
   };
 
   return (
+    
     <div
       style={{ marginLeft: "0px", marginRight: "10px", padding: "8px" }}
       onDoubleClick={handleRowDoubleClick}
       ref={containerRef}
     >
+      <table>
+      <tr>
       {schedule.map((item, index) => (
-        <div
+        <td
           key={index}
           style={{
             marginBottom: "4px",
@@ -69,7 +72,7 @@ const ScheduleManagement: React.FC<{
               <b>{item.name}</b>
             </p>
           </div>
-          {index < schedule.length - 1 &&
+          {/* {index < schedule.length - 1 &&
             calculateGap(item.endtime, schedule[index + 1].starttime) > 0 && (
               <div
                 style={{
@@ -89,9 +92,12 @@ const ScheduleManagement: React.FC<{
                   Minutes
                 </p>
               </div>
-            )}
-        </div>
+            )} */}
+        </td>
       ))}
+      </tr>
+    </table>
+      
       <Modal open={isBlankCellModalOpen} onClose={() => setIsBlankCellModalOpen(false)}>
         <Box sx={{
           position: "absolute",
@@ -115,4 +121,4 @@ const ScheduleManagement: React.FC<{
   );
 };
 
-export default ScheduleManagement;
+export default ScheduleManagementHorizontal;

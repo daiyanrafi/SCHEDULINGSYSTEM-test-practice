@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import ScheduleDashboard from './Dashboard';
 import resourcesData from './data/resource.json';
 import bookingsData from './data/bookings.json';
+import SABSCalendar from './modules/sabscalendar/SABSCalendar';
 
 const DashboardParent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,7 +21,16 @@ const DashboardParent = () => {
 
   return (
     <div>
-      <ScheduleDashboard
+      {/* <ScheduleDashboard
+        resources={resourcesData}
+        bookings={bookingsData}
+        isModalOpen={isModalOpen}
+        selectedRowData={selectedRowData}
+        onOpenModal={handleOpenModal}
+        onCloseModal={handleCloseModal}
+      /> */}
+
+      <SABSCalendar
         resources={resourcesData}
         bookings={bookingsData}
         isModalOpen={isModalOpen}

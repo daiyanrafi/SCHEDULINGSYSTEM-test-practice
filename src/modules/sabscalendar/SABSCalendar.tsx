@@ -93,6 +93,81 @@ const SABSCalendar: React.FC<{ resources: any[]; bookings: any[]; isModalOpen: b
     );
   };
 
+  // //another approch with timediff fucn - no need
+  // const getbookingsforaday = (
+  //   bookings: any,
+  //   resourceid: string,
+  //   day: number,
+  //   month: number,
+  //   year: number,
+  //   headertext: string,
+  //   header: IScheduleColumn
+  // ) => {
+  //   let bookingtext = '';
+  //   let daybookings: any = [];
+  //   let colspan = 1; // Initialize colspan to 1
+  //   let timediff = 0; // Initialize timediff to 0
+  
+  //   bookings.map((booking: any) => {
+  //     const bdate = new Date(booking.starttime);
+  //     const bendtime = new Date(booking.endtime);
+  
+  //     if (
+  //       booking.Resource.bookableresourceid === resourceid &&
+  //       bdate.getDate() === day &&
+  //       bdate.getMonth() + 1 === month &&
+  //       bdate.getFullYear() === year &&
+  //       bdate.getHours() === header.hour &&
+  //       bdate.getMinutes() === header.minute
+  //     ) {
+  //       const duration = (bendtime.getTime() - bdate.getTime()) / (1000 * 60 * 30);
+  //       colspan = Math.max(colspan, duration);
+  
+  //       // Calculate timediff if it's not already calculated
+  //       if (timediff === 0) {
+  //         timediff = (bendtime.getTime() - bdate.getTime()) / 1000;
+  //       }
+  
+  //       bookingtext +=
+  //         " " +
+  //         bdate.getHours() +
+  //         ":" +
+  //         bdate.getMinutes() +
+  //         " " +
+  //         booking.name +
+  //         `,`;
+  //       daybookings.push(booking);
+  //     }
+  //   });
+  
+  //   // Convert timediff to intervals of 30 minutes if it's calculated
+  //   if (timediff !== 0) {
+  //     timediff = timediff / 60 / 30;
+  //   }
+  
+  //   return (
+  //     <TableCell colSpan={colspan} // Apply colspan attribute
+  //       sx={{
+  //         fontFamily: "Calibri",
+  //         border: "1px solid #E0E0E0",
+  //         padding: "2px 40px",
+  //         backgroundColor: "#FAFAFA",
+  //         verticalAlign: "top",
+  //         height: "20px",
+  //         width: `${colspan * 100}px` // Adjust width based on colspan
+  //       }}
+  //     >
+  //       <ScheduleManagement
+  //         schedule={daybookings}
+  //         onRowClick={(rowData: ScheduleItem) => {
+  //           onOpenModal(rowData);
+  //         }}
+  //       />
+  //     </TableCell>
+  //   );
+  // };
+  
+
 
   const columns = (headers: IScheduleColumn[], resourceid: string) => {
     return headers.map((header: IScheduleColumn) => {

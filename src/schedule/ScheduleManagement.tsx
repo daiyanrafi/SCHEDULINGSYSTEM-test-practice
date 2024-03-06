@@ -27,12 +27,12 @@ const ScheduleManagement: React.FC<{
     return date.toLocaleString("en-AU", { hour: "2-digit", minute: "2-digit" });
   };
 
-  const [isBlankCellModalOpen, setIsBlankCellModalOpen] = React.useState<boolean>(false);
+  // const [isBlankCellModalOpen, setIsBlankCellModalOpen] = React.useState<boolean>(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleRowDoubleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (containerRef.current && containerRef.current === e.target) {
-      setIsBlankCellModalOpen(true);
+      // setIsBlankCellModalOpen(true);
     }
   };
 
@@ -92,7 +92,7 @@ const ScheduleManagement: React.FC<{
             )}
         </div>
       ))}
-      <Modal open={isBlankCellModalOpen} onClose={() => setIsBlankCellModalOpen(false)}>
+      {/* <Modal open={isBlankCellModalOpen} onClose={() => setIsBlankCellModalOpen(false)}>
         <Box sx={{
           position: "absolute",
           top: "50%",
@@ -109,7 +109,7 @@ const ScheduleManagement: React.FC<{
             <p>Please click the cell</p>
           </div>
         </Box>
-      </Modal>
+      </Modal> */}
 
     </div>
   );

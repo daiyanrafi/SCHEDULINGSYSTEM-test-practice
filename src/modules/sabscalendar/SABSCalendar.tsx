@@ -1,5 +1,3 @@
-// ScheduleDashboard.tsx
-
 import React from "react";
 import {
   Button,
@@ -26,7 +24,7 @@ const SABSCalendar: React.FC<{ resources: any[]; bookings: any[]; isModalOpen: b
   const startDate = new Date("2024-02-25T23:00:00Z");
   const endDate = new Date("2024-04-12T23:00:00Z");
   const selectedDay: Number = 3;
-  const [noofDays, setnoofDays] = React.useState<number>(0);
+  // const [noofDays, setnoofDays] = React.useState<number>(0);
   const [headers, setHeaders] = React.useState<IScheduleColumn[]>([]);
 
   const selectedDate: Date = new Date("2024-02-28T01:30:00Z");
@@ -40,10 +38,11 @@ const SABSCalendar: React.FC<{ resources: any[]; bookings: any[]; isModalOpen: b
     headertext: string,
     header: IScheduleColumn
   ) => {
-    let bookingtext = '';
+    let bookingtext = "";
     let daybookings: any = [];
     // var timediff = 0;
     let colspan = 1; // Initialize colspan to 1
+    let isEmpty = true; // Track if the cell is empty
     bookings.map((booking: any) => {
       const bdate = new Date(booking.starttime);
       const bendtime = new Date(booking.endtime);
@@ -55,10 +54,11 @@ const SABSCalendar: React.FC<{ resources: any[]; bookings: any[]; isModalOpen: b
         bdate.getHours() === header.hour &&
         bdate.getMinutes() === header.minute
       ) {
-        // timediff = (bdate.getTime() - bendtime.getTime())/1000; 
+        isEmpty = false; // If a booking is found, the cell is not empty
+         // timediff = (bdate.getTime() - bendtime.getTime())/1000; 
         // timediff = timediff/60/30;
-        
-        const duration = (bendtime.getTime() - bdate.getTime()) / (1000 * 60 * 30); // Calculate duration in 30-minute intervals
+
+        const duration = (bendtime.getTime() - bdate.getTime()) / (1000 * 60 * 30); //problem with the calculation
         colspan = Math.max(colspan, duration); // Update colspan with maximum duration
         bookingtext +=
           " " +
@@ -71,17 +71,39 @@ const SABSCalendar: React.FC<{ resources: any[]; bookings: any[]; isModalOpen: b
         daybookings.push(booking);
       }
     });
+
+    // If cell is empty, return a clickable TableCell
+    if (isEmpty) {
+      return (
+        <TableCell
+          key={`${header.day}-${header.hour}-${header.minute}`}
+          onClick={() => alert("Cell is empty!")} // Alert on click for empty cell
+          sx={{
+            fontFamily: "Calibri",
+            border: "1px solid #E0E0E0",
+            padding: "0px 40px",
+            backgroundColor: "#FAFAFA",
+            verticalAlign: "top",
+            width: `${colspan * 40}px`,
+            cursor: "pointer", // Set cursor to pointer for clickable effect
+          }}
+        ></TableCell>
+      );
+    }
+
+    // If cell has bookings, return ScheduleManagement component
     return (
-      <TableCell colSpan={colspan} // Apply colspan attribute
+      <TableCell
+        key={`${header.day}-${header.hour}-${header.minute}`}
+        colSpan={colspan} // Apply colspan attribute
         sx={{
           fontFamily: "Calibri",
           border: "1px solid #E0E0E0",
-          padding: "0px 40px",
+          padding: "0px",
           backgroundColor: "#FAFAFA",
           verticalAlign: "top",
           // height: "10px",
-          // width: `${colspan * 40}px`
-          maxWidth: `${colspan * 20}px`  // Adjust width based on colspan
+          // width: `${colspan * 0}px`, // Adjust width based on colspan
         }}
       >
         <ScheduleManagement
@@ -167,8 +189,6 @@ const SABSCalendar: React.FC<{ resources: any[]; bookings: any[]; isModalOpen: b
   //     </TableCell>
   //   );
   // };
-  
-
 
   const columns = (headers: IScheduleColumn[], resourceid: string) => {
     return headers.map((header: IScheduleColumn) => {
@@ -184,29 +204,29 @@ const SABSCalendar: React.FC<{ resources: any[]; bookings: any[]; isModalOpen: b
     });
   };
 
-  const setHeaderSettings = (startDate: Date, endDate: Date) => {
-    if (!startDate || !endDate) return [];
+  // const setHeaderSettings = (startDate: Date, endDate: Date) => {
+  //   if (!startDate || !endDate) return [];
 
-    const headersl = [];
-    let currentDate = new Date(startDate);
+  //   const headersl = [];
+  //   let currentDate = new Date(startDate);
 
-    while (currentDate <= endDate) {
-      if (selectedDay === undefined || currentDate.getDay() === selectedDay) {
-        const header: IScheduleColumn = {
-          month: currentDate.getMonth() + 1,
-          day: currentDate.getDate(),
-          year: currentDate.getFullYear(),
-          text: '',
-          hour: 0,
-          minute: 0
-        };
-        headersl.push(header);
-      }
-      currentDate.setDate(currentDate.getDate() + 1);
-    }
+  //   while (currentDate <= endDate) {
+  //     if (selectedDay === undefined || currentDate.getDay() === selectedDay) {
+  //       const header: IScheduleColumn = {
+  //         month: currentDate.getMonth() + 1,
+  //         day: currentDate.getDate(),
+  //         year: currentDate.getFullYear(),
+  //         text: '',
+  //         hour: 0,
+  //         minute: 0
+  //       };
+  //       headersl.push(header);
+  //     }
+  //     currentDate.setDate(currentDate.getDate() + 1);
+  //   }
 
-    setHeaders(headersl);
-  };
+  //   setHeaders(headersl);
+  // };
 
   const setHeaderColumns = () => {
     var starttime: number = 8.00;
@@ -267,7 +287,7 @@ const SABSCalendar: React.FC<{ resources: any[]; bookings: any[]; isModalOpen: b
             fontWeight: "bold",
             textTransform: "uppercase",
             width: "50px",
-            height: "20px" // Set desired height for the table cell
+            // height: "20px" // Set desired height for the table cell
           }}
         >
           <Typography variant="h3" sx={{ fontSize: 16 }}>
@@ -279,7 +299,7 @@ const SABSCalendar: React.FC<{ resources: any[]; bookings: any[]; isModalOpen: b
       starttime += .30;
     }
 
-    // if (!startDate || !endDate) return [];
+     // if (!startDate || !endDate) return [];
 
 
     // const currentDate = new Date(startDate);
@@ -330,14 +350,14 @@ const SABSCalendar: React.FC<{ resources: any[]; bookings: any[]; isModalOpen: b
         <TableHead>
           <TableRow>
             <TableCell
-              sx={{
-                // fontFamily: "Calibri",
-                padding: "8px",
-                // width: "120px",
-                // textAlign: "center",
-                border: "1px solid #E0E0E0",
-                fontSize: 16
-              }}
+             sx={{
+              // fontFamily: "Calibri",
+              padding: "8px",
+              // width: "120px",
+              // textAlign: "center",
+              border: "1px solid #E0E0E0",
+              fontSize: 16
+            }}
             >
               <Typography variant="h3" sx={{ fontSize: 23, fontFamily: "Calibri" }}>
                 Resource
@@ -348,7 +368,7 @@ const SABSCalendar: React.FC<{ resources: any[]; bookings: any[]; isModalOpen: b
         </TableHead>
         <TableBody>
           {resources.map((resource, index) => (
-            <TableRow key={resource.bookableresourceid} sx={{ height: "10px" }}> {/* Adjust the height of the TableRow */}
+            <TableRow key={resource.bookableresourceid}>
               <TableCell
                 sx={{
                   // fontFamily: "Calibri",

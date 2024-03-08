@@ -159,6 +159,7 @@ const WaitingListType: React.FC<IProps> = (props) => {
     };
 
     const handleButtonClick = (buttonName: string) => {
+        props.onButtonClick(buttonName); // this line added new to move the button click
         setSelectedButton(buttonName);
         console.log("Button clicked:", buttonName);
     };
@@ -231,7 +232,7 @@ const WaitingListType: React.FC<IProps> = (props) => {
         >
             <Grid container justifyContent="flex-end" spacing={1} style={{ marginBottom: "20px" }}>
                 <Grid item>
-                    {/* <PrimaryButton
+                     {/* <PrimaryButton
                         styles={buttonStyles}
                         onClick={() => handleButtonClick("Button 1")}
                         text="Button 1"
@@ -264,7 +265,7 @@ const WaitingListType: React.FC<IProps> = (props) => {
                         style={{ backgroundColor: selectedButton === "Active List" ? 'green' : undefined, fontFamily: 'Calibri' }}
                     />
                 </Grid>
-            </Grid>
+            </Grid>            
             <TableContainer component={Paper} style={{ marginTop: "20px", overflowX: 'auto' }}>
                 <Table aria-label="customized table">
                     <TableHead>
@@ -441,4 +442,5 @@ export default WaitingListType;
 interface IProps {
     data: any;
     waitlisttypes: any;
+    onButtonClick: (buttonName: string) => void;
 }

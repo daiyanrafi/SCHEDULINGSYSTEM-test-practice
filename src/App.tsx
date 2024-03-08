@@ -6,6 +6,7 @@ import DashboardParent from './DashboardParent';
 import MyTable from './MyTable/WaitingListType';
 import WaitingListTypeContainer from './MyTable/WaitingListTypeContainter';
 
+
 function App() {
   return (
     <div className="App">

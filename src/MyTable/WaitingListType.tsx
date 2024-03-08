@@ -24,6 +24,8 @@ import Divider from '@mui/material/Divider';
 import FileCopyIcon from '@mui/icons-material/Send';
 // import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 // import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { parseISO, differenceInYears, differenceInDays } from 'date-fns';
+
 
 interface Row {
     name: string;
@@ -229,7 +231,7 @@ const WaitingListType: React.FC<IProps> = (props) => {
         >
             <Grid container justifyContent="flex-end" spacing={1} style={{ marginBottom: "20px" }}>
                 <Grid item>
-                {/* <PrimaryButton
+                     {/* <PrimaryButton
                         styles={buttonStyles}
                         onClick={() => handleButtonClick("Button 1")}
                         text="Button 1"
@@ -282,39 +284,46 @@ const WaitingListType: React.FC<IProps> = (props) => {
                             <StyledTableCell>Mobile Number</StyledTableCell>
                         </TableRow>
                     </TableHead>
+
                     <TableBody>
-                        {props.data.map((row: any, index: number) => (
-                            <StyledTableRow
-                                key={index}
-                                onContextMenu={(e) => handleRowRightClick(e, row)}
-                                onClick={() => handleRowLeftClick(row)}
-                                onMouseEnter={() => setHoveredRow(index)}
-                                onMouseLeave={() => setHoveredRow(null)}
-                                style={{ backgroundColor: hoveredRow === index ? "#f0f0f0" : "inherit" }}
-                            >
-                                <TableCell>{row.name}</TableCell>
-                                <TableCell>{row.age}</TableCell>
-                                <TableCell>{row.opened}</TableCell>
-                                <TableCell>{row.days}</TableCell>
-                                <TableCell>{row.priority}</TableCell>
-                                <TableCell>{row.site}</TableCell>
-                                <TableCell>{row.type}</TableCell>
-                                <TableCell
-                                    style={{
-                                        backgroundColor: getBackgroundColor(row.serviceCategory),
-                                        color: row.serviceCategory === "Behaviour Support" ? "black" : "white",
-                                    }}
+                        {props.data.map((row: any, index: number) => {
+                            const age = differenceInYears(new Date(), parseISO(row.sabs_dob)); // Calculate age
+                            const daysSinceCreation = differenceInDays(new Date(), parseISO(row.createdon)); // Calculate days since creation
+                            const daysSinceOpened = differenceInDays(parseISO(row.createdon), parseISO(row.opened)); // Calculate days between createdon and opened
+                            return (
+                                <StyledTableRow
+                                    key={index}
+                                    onContextMenu={(e) => handleRowRightClick(e, row)}
+                                    onClick={() => handleRowLeftClick(row)}
+                                    onMouseEnter={() => setHoveredRow(index)}
+                                    onMouseLeave={() => setHoveredRow(null)}
+                                    style={{ backgroundColor: hoveredRow === index ? "#f0f0f0" : "inherit" }}
                                 >
-                                    {row.serviceCategory}
-                                </TableCell>
-                                <TableCell>{row.fundingSource}</TableCell>
-                                <TableCell>{row.fundingStart}</TableCell>
-                                <TableCell>{row.fundingEnd}</TableCell>
-                                <TableCell>{row.emailAddress}</TableCell>
-                                <TableCell>{row.mobileNumber}</TableCell>
-                            </StyledTableRow>
-                        ))}
+                                    <TableCell>{row.name}</TableCell>
+                                    <TableCell>{age}</TableCell> {/* Display calculated age */}
+                                    <TableCell>{daysSinceOpened}</TableCell>
+                                    <TableCell>{daysSinceCreation}</TableCell> {/* Display days since creation */}
+                                    <TableCell>{row.priority}</TableCell>
+                                    <TableCell>{row.site}</TableCell>
+                                    <TableCell>{row.type}</TableCell>
+                                    <TableCell
+                                        style={{
+                                            backgroundColor: getBackgroundColor(row.serviceCategory),
+                                            color: row.serviceCategory === "Behaviour Support" ? "black" : "white",
+                                        }}
+                                    >
+                                        {row.serviceCategory}
+                                    </TableCell>
+                                    <TableCell>{row.fundingSource}</TableCell>
+                                    <TableCell>{row.fundingStart}</TableCell>
+                                    <TableCell>{row.fundingEnd}</TableCell>
+                                    <TableCell>{row.emailAddress}</TableCell>
+                                    <TableCell>{row.mobileNumber}</TableCell>
+                                </StyledTableRow>
+                            );
+                        })}
                     </TableBody>
+
                 </Table>
             </TableContainer>
             {showTypePopup && (
@@ -392,7 +401,7 @@ const WaitingListType: React.FC<IProps> = (props) => {
           </Button>
         </DialogActions>
       </Dialog> */}
-      
+
             <Panel
                 isOpen={dialogOpen}
                 onDismiss={_dismissPanel}

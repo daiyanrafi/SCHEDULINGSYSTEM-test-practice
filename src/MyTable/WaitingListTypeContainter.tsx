@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
+import WaitingListType from "./WaitingListType";
 import data from "./data.json";
 import waitlisttypes from "./waitlisttypes.json";
-import WaitingListType from "./WaitingListType";
 
 
 interface Row {
@@ -20,14 +20,9 @@ interface Row {
   mobileNumber: string;
 }
 
-
-
-const WaitingListTypeContainer = () => { 
+const WaitingListTypeContainer = () => {
   useEffect(() => {
-   
-
   }, []);
-
 
   return (
     <WaitingListType data={data} waitlisttypes={waitlisttypes} />

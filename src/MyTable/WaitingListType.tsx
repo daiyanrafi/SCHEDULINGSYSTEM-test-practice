@@ -226,70 +226,72 @@ const WaitingListType: React.FC<IProps> = (props) => {
 
     return (
         <div
-            style={{ marginRight: "50px", marginLeft: "50px", height: "1000px", marginTop: "30px" }}
+            style={{ marginRight: "50px", marginLeft: "50px", height: "1000px", marginTop: "30px", fontFamily: 'Calibri' }}
             ref={tableRef}
         >
             <Grid container justifyContent="flex-end" spacing={1} style={{ marginBottom: "20px" }}>
                 <Grid item>
-                     {/* <PrimaryButton
-                        styles={buttonStyles}
-                        onClick={() => handleButtonClick("Button 1")}
-                        text="Button 1"
-                        checked={selectedButton === "Button 1"}
-                    /> */}
                     <PrimaryButton
                         onClick={() => handleButtonClick("Enquiry List")}
                         text="Enquiry List"
                         style={{ backgroundColor: selectedButton === "Enquiry List" ? 'green' : undefined }}
-                    />
+                    >
+                        Enquiry List
+                    </PrimaryButton>
                 </Grid>
                 <Grid item>
                     <PrimaryButton
                         onClick={() => handleButtonClick("Waiting Assessment")}
                         text="Waiting Assessment"
                         style={{ backgroundColor: selectedButton === "Waiting Assessment" ? 'green' : undefined }}
-                    />
+                    >
+                        Waiting Assessment
+                    </PrimaryButton>
                 </Grid>
                 <Grid item>
                     <PrimaryButton
                         onClick={() => handleButtonClick("Booked Assessment")}
                         text="Booked Assessment"
                         style={{ backgroundColor: selectedButton === "Booked Assessment" ? 'green' : undefined }}
-                    />
+                    >
+                        Booked Assessment
+                    </PrimaryButton>
                 </Grid>
                 <Grid item>
                     <PrimaryButton
                         onClick={() => handleButtonClick("Active List")}
                         text="Active List"
                         style={{ backgroundColor: selectedButton === "Active List" ? 'green' : undefined }}
-                    />
+                    >
+                        Active List
+                    </PrimaryButton>
                 </Grid>
             </Grid>
-            <TableContainer component={Paper} style={{ marginTop: "20px" }}>
+            <TableContainer component={Paper} style={{ marginTop: "20px", overflowX: 'auto' }}>
                 <Table aria-label="customized table">
                     <TableHead>
                         <TableRow>
-                            <StyledTableCell>Client Name</StyledTableCell>
-                            <StyledTableCell>Age</StyledTableCell>
-                            <StyledTableCell>Opened</StyledTableCell>
-                            <StyledTableCell>Days</StyledTableCell>
-                            <StyledTableCell>Priority</StyledTableCell>
-                            <StyledTableCell>Site</StyledTableCell>
-                            <StyledTableCell onClick={handleTypeHeaderClick}>Type</StyledTableCell> {/* Adding onClick to Type header */}
-                            <StyledTableCell>Service Category</StyledTableCell>
-                            <StyledTableCell>Funding Source</StyledTableCell>
-                            <StyledTableCell>Funding Start</StyledTableCell>
-                            <StyledTableCell>Funding End</StyledTableCell>
-                            <StyledTableCell>Email Address</StyledTableCell>
-                            <StyledTableCell>Mobile Number</StyledTableCell>
+                            <StyledTableCell style={{ fontFamily: 'Calibri' }}>Client Name</StyledTableCell>
+                            <StyledTableCell style={{ fontFamily: 'Calibri' }}>Age</StyledTableCell>
+                            <StyledTableCell style={{ fontFamily: 'Calibri' }}>Opened</StyledTableCell>
+                            <StyledTableCell style={{ fontFamily: 'Calibri' }}>Days</StyledTableCell>
+                            <StyledTableCell style={{ fontFamily: 'Calibri' }}>Priority</StyledTableCell>
+                            <StyledTableCell style={{ fontFamily: 'Calibri' }}>Site</StyledTableCell>
+                            <StyledTableCell onClick={handleTypeHeaderClick} style={{ minWidth: '100px', fontFamily: 'Calibri' }}>Type</StyledTableCell>
+                            <StyledTableCell style={{ fontFamily: 'Calibri' }}>Service Category</StyledTableCell>
+                            <StyledTableCell style={{ fontFamily: 'Calibri' }}>Funding Source</StyledTableCell>
+                            <StyledTableCell style={{ fontFamily: 'Calibri' }}>Funding Start</StyledTableCell>
+                            <StyledTableCell style={{ fontFamily: 'Calibri' }}>Funding End</StyledTableCell>
+                            <StyledTableCell style={{ fontFamily: 'Calibri' }}>Email Address</StyledTableCell>
+                            <StyledTableCell style={{ fontFamily: 'Calibri' }}>Mobile Number</StyledTableCell>
                         </TableRow>
                     </TableHead>
-
+    
                     <TableBody>
                         {props.data.map((row: any, index: number) => {
-                            const age = differenceInYears(new Date(), parseISO(row.sabs_dob)); // Calculate age
-                            const daysSinceCreation = differenceInDays(new Date(), parseISO(row.createdon)); // Calculate days since creation
-                            const daysSinceOpened = differenceInDays(parseISO(row.createdon), parseISO(row.opened)); // Calculate days between createdon and opened
+                            const age = differenceInYears(new Date(), parseISO(row.sabs_dob));
+                            const daysSinceCreation = differenceInDays(new Date(), parseISO(row.createdon));
+                            const daysSinceOpened = differenceInDays(parseISO(row.createdon), parseISO(row.opened));
                             return (
                                 <StyledTableRow
                                     key={index}
@@ -299,31 +301,32 @@ const WaitingListType: React.FC<IProps> = (props) => {
                                     onMouseLeave={() => setHoveredRow(null)}
                                     style={{ backgroundColor: hoveredRow === index ? "#f0f0f0" : "inherit" }}
                                 >
-                                    <TableCell>{row.name}</TableCell>
-                                    <TableCell>{age}</TableCell> {/* Display calculated age */}
-                                    <TableCell>{daysSinceOpened}</TableCell>
-                                    <TableCell>{daysSinceCreation}</TableCell> {/* Display days since creation */}
-                                    <TableCell>{row.priority}</TableCell>
-                                    <TableCell>{row.site}</TableCell>
-                                    <TableCell>{row.type}</TableCell>
+                                    <TableCell style={{ fontFamily: 'Calibri' }}>{row.name}</TableCell>
+                                    <TableCell style={{ fontFamily: 'Calibri' }}>{age}</TableCell>
+                                    <TableCell style={{ fontFamily: 'Calibri' }}>{daysSinceOpened}</TableCell>
+                                    <TableCell style={{ fontFamily: 'Calibri' }}>{daysSinceCreation}</TableCell>
+                                    <TableCell style={{ fontFamily: 'Calibri' }}>{row.priority}</TableCell>
+                                    <TableCell style={{ fontFamily: 'Calibri' }}>{row.site}</TableCell>
+                                    <TableCell style={{ fontFamily: 'Calibri' }}>{row.type}</TableCell>
                                     <TableCell
                                         style={{
                                             backgroundColor: getBackgroundColor(row.serviceCategory),
                                             color: row.serviceCategory === "Behaviour Support" ? "black" : "white",
+                                            fontFamily: 'Calibri'
                                         }}
                                     >
                                         {row.serviceCategory}
                                     </TableCell>
-                                    <TableCell>{row.fundingSource}</TableCell>
-                                    <TableCell>{row.fundingStart}</TableCell>
-                                    <TableCell>{row.fundingEnd}</TableCell>
-                                    <TableCell>{row.emailAddress}</TableCell>
-                                    <TableCell>{row.mobileNumber}</TableCell>
+                                    <TableCell style={{ fontFamily: 'Calibri' }}>{row.fundingSource}</TableCell>
+                                    <TableCell style={{ fontFamily: 'Calibri' }}>{row.fundingStart}</TableCell>
+                                    <TableCell style={{ fontFamily: 'Calibri' }}>{row.fundingEnd}</TableCell>
+                                    <TableCell style={{ fontFamily: 'Calibri' }}>{row.emailAddress}</TableCell>
+                                    <TableCell style={{ fontFamily: 'Calibri' }}>{row.mobileNumber}</TableCell>
                                 </StyledTableRow>
                             );
                         })}
                     </TableBody>
-
+    
                 </Table>
             </TableContainer>
             {showTypePopup && (
@@ -341,7 +344,7 @@ const WaitingListType: React.FC<IProps> = (props) => {
                             placeholder="Select type"
                             onChange={handleTypeComboBoxChange}
                         />
-
+    
                         <br />
                         <PrimaryButton onClick={handleFinishClick} styles={buttonStyles}>
                             Finish
@@ -359,54 +362,19 @@ const WaitingListType: React.FC<IProps> = (props) => {
                     <MenuItem onClick={handleEditClick} disableRipple>
                         <EditIcon />
                         Edit
-                        {/* {selectedRow.name} */}
                     </MenuItem>
                     <MenuItem onClick={() => setSelectedRow(null)} disableRipple>
                         <FileCopyIcon />
                         Send Service In-take from
                     </MenuItem>
                     <Divider sx={{ my: 0.5 }} />
-                    {/* <MenuItem onClick={() => setSelectedRow(null)} disableRipple>
-            <ArchiveIcon />
-            Archive
-          </MenuItem>
-          <MenuItem onClick={() => setSelectedRow(null)} disableRipple>
-            <MoreHorizIcon />
-            More
-          </MenuItem> */}
                 </StyledMenu>
             )}
-            {/* <Dialog open={dialogOpen} onClose={handleCloseDialog}>
-        <DialogTitle>Row Information</DialogTitle>
-        <DialogContent>
-          <div>
-            <p><strong>Client Name:</strong> {selectedRow?.name}</p>
-            <p><strong>Age:</strong> {selectedRow?.age}</p>
-            <p><strong>Opened:</strong> {selectedRow?.opened}</p>
-            <p><strong>Days:</strong> {selectedRow?.days}</p>
-            <p><strong>Priority:</strong> {selectedRow?.priority}</p>
-            <p><strong>Site:</strong> {selectedRow?.site}</p>
-            <p><strong>Type:</strong> {selectedRow?.type}</p>
-            <p><strong>Service Category:</strong> {selectedRow?.serviceCategory}</p>
-            <p><strong>Funding Source:</strong> {selectedRow?.fundingSource}</p>
-            <p><strong>Funding Start:</strong> {selectedRow?.fundingStart}</p>
-            <p><strong>Funding End:</strong> {selectedRow?.fundingEnd}</p>
-            <p><strong>Email Address:</strong> {selectedRow?.emailAddress}</p>
-            <p><strong>Mobile Number:</strong> {selectedRow?.mobileNumber}</p>
-          </div>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog} color="primary">
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog> */}
-
+    
             <Panel
                 isOpen={dialogOpen}
                 onDismiss={_dismissPanel}
                 type={PanelType.smallFixedFar}
-                //customWidth='1080'
                 closeButtonAriaLabel="Close"
                 headerText='Edit Waitlist'
             >
@@ -426,11 +394,13 @@ const WaitingListType: React.FC<IProps> = (props) => {
                         Save
                     </PrimaryButton>
                     <DefaultButton onClick={handleCloseDialog}>Cancel</DefaultButton>
-
+    
                 </div>
             </Panel>
         </div>
     );
+    
+    
 };
 
 export default WaitingListType;

@@ -1,14 +1,15 @@
 import React, { useRef } from "react";
-import Modal from "@mui/material/Modal";
-import Box from "@mui/material/Box";
+// import Modal from "@mui/material/Modal";
+// import Box from "@mui/material/Box";
 
-interface ScheduleItem {
+export interface ScheduleItem {
   starttime: string;
   endtime: string;
   name: string;
   Resource: {
     name: string;
   };
+  callspan?: number;
 }
 
 const ScheduleManagement: React.FC<{
@@ -63,11 +64,7 @@ const ScheduleManagement: React.FC<{
               borderRadius: "8px",
               padding: "4px 10px",
             }}
-          >
-            <p style={{ margin: 0 }}>
-              {formatDate(item.starttime)} - {formatDate(item.endtime)}{" "}
-              <b>{item.name}</b>
-            </p>
+          >              <b>{item.name}</b>
           </div>
           {index < schedule.length - 1 &&
             calculateGap(item.endtime, schedule[index + 1].starttime) > 0 && (

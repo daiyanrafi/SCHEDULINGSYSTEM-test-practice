@@ -1,5 +1,3 @@
-// DashboardParent.tsx
-
 import React, { useState } from 'react';
 import ScheduleDashboard from './Dashboard';
 import resourcesData from './data/resource.json';
@@ -19,17 +17,18 @@ const DashboardParent = () => {
     setIsModalOpen(false);
   };
 
+  const handleForwardClick = () => {
+    console.log("Forward");
+    // Add your logic here
+  };
+
+  const handleBackwardClick = () => {
+    console.log("Backward");
+    // Add your logic here
+  };
+
   return (
     <div>
-      {/* <ScheduleDashboard
-        resources={resourcesData}
-        bookings={bookingsData}
-        isModalOpen={isModalOpen}
-        selectedRowData={selectedRowData}
-        onOpenModal={handleOpenModal}
-        onCloseModal={handleCloseModal}
-      /> */}
-
       <SABSCalendar
         resources={resourcesData}
         bookings={bookingsData}
@@ -37,6 +36,8 @@ const DashboardParent = () => {
         selectedRowData={selectedRowData}
         onOpenModal={handleOpenModal}
         onCloseModal={handleCloseModal}
+        onForwardClick={handleForwardClick}
+        onBackwardClick={handleBackwardClick}
       />
     </div>
   );

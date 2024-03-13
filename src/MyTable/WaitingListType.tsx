@@ -26,7 +26,6 @@ import FileCopyIcon from '@mui/icons-material/Send';
 // import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { parseISO, differenceInYears, differenceInDays } from 'date-fns';
 
-
 interface Row {
     name: string;
     age: number;
@@ -41,6 +40,7 @@ interface Row {
     fundingEnd: string;
     emailAddress: string;
     mobileNumber: string;
+    sabs_waitlistcatagory: String
 }
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -92,11 +92,14 @@ const WaitingListType: React.FC<IProps> = (props) => {
     const [selectedRow, setSelectedRow] = useState<Row | null>(null);
     const [hoveredRow, setHoveredRow] = useState<number | null>(null);
     const [dialogOpen, setDialogOpen] = useState(false);
-    const [categories, setCategories] = useState<any[]>([]);
     const [types, setTypes] = useState<any[]>([]);
     const tableRef = useRef<HTMLDivElement>(null);
     const [selectedButton, setSelectedButton] = useState<string | null>(null);
+    const [item, setItem] = useState<any>(null);
+    const [selectedType, setSelectedType] = useState<string | number>('');
+    const [selectedCategory, setSelectedCategory] = useState<string | number>('');
     const [showTypePopup, setShowTypePopup] = useState(false); // State to control showing type popup
+    const [selectedTypeOptions, setSelectedTypeOptions] = useState<string[]>([]);
 
     const getBackgroundColor = (category: string) => {
         switch (category) {
@@ -104,7 +107,7 @@ const WaitingListType: React.FC<IProps> = (props) => {
                 return "#f44336";
             case "Psychology":
                 return "#29b6f6";
-            case "Behaviour Support":
+            case "Behaviour Supports":
                 return "#fbc02d";
             case "Speech Pathology":
                 return "#ba68c8";
@@ -116,14 +119,6 @@ const WaitingListType: React.FC<IProps> = (props) => {
     };
 
     useEffect(() => {
-        let categories: any[] = [];
-        props.waitlisttypes.map((cat: any) => {
-            if (!categories.find(ct => cat.sabs_category === ct.key)) {
-                categories.push({ key: cat.sabs_category, text: cat.sabs_category });
-            }
-        });
-
-        setCategories(categories);
         const handleOutsideClick = (event: MouseEvent) => {
             if (tableRef.current && !tableRef.current.contains(event.target as Node)) {
                 setSelectedRow(null);
@@ -140,14 +135,25 @@ const WaitingListType: React.FC<IProps> = (props) => {
     };
 
     const handleRowLeftClick = (row: Row) => {
-        //setSelectedRow(row);
+        console.log("Clicked row:", row);
         setDialogOpen(true);
+        setItem(row);
+        if (row.sabs_waitlistcatagory)
+        oncategorychange(row.sabs_waitlistcatagory.toString());
+        setSelectedCategory(row.sabs_waitlistcatagory.toString());
+        setSelectedType(row.type);
     };
+    
 
-    // const oncategorychange = (evt: any, fieldname: string, value?: any) => {
-    //   console.log(value);
-    //   alert('hello')
-    // }
+    const oncategorychange = (selectedCategory: string | number) => {
+        setSelectedCategory(selectedCategory);
+        const types = props.waitlisttypes.filter((wt: any) => wt.sabs_category === selectedCategory);
+        types.map((typ: any) => {
+            typ.key = typ.sabs_type;
+            typ.text = typ.sabs_type;
+        })
+        setTypes(types);
+    }
 
     const handleCloseDialog = () => {
         setDialogOpen(false);
@@ -161,57 +167,52 @@ const WaitingListType: React.FC<IProps> = (props) => {
     const handleButtonClick = (buttonName: string) => {
         props.onButtonClick(buttonName); // this line added new to move the button click
         setSelectedButton(buttonName);
-        console.log("Button clicked:", buttonName);
+        oncategorychange(buttonName);
     };
 
-    const handleDropdownChange = (id: string) => (ev: React.FormEvent<HTMLDivElement>, option?: IDropdownOption): void => {
+        const handleDropdownChange = (id: string) => (ev: React.FormEvent<HTMLDivElement>, option?: IDropdownOption): void => {
         if (option) {
             console.log(`Dropdown ${id} selected option:`, option);
             if (id === 'category') {
-                const types = props.waitlisttypes.filter((wt: any) => wt.sabs_category === option.key);
-                types.map((typ: any) => {
-                    typ.key = typ.sabs_type;
-                    typ.text = typ.sabs_type;
-                })
-                setTypes(types);
+                oncategorychange(option.key);
             }
+            else
+            setSelectedType(option.key);
         }
     };
+
 
     // const handleTypeComboBoxChange = (event: React.FormEvent<IComboBox>, option?: IComboBoxOption, index?: number, value?: string): void => {
     //     if (option) {
     //         console.log('Type ComboBox selected option:', option);
+
     //         const selectedType = types[index as number];
     //         console.log('Selected type:', selectedType);
     //     }
     // };
 
-
-    const handleTypeComboBoxChange = (event: React.FormEvent<IComboBox>, option?: IComboBoxOption, index?: number, value?: string): void => {
-        if (option) {
-            console.log('Type ComboBox selected option:', option);
-            // Get the selected type from the options using the index
-            const selectedType = types[index as number]; // Assuming the index corresponds to the selected type in the types array
-
-            // Now you can use the selectedType as needed
-            console.log('Selected type:', selectedType);
+    const handleTypeComboBoxChange = (event: React.FormEvent<IComboBox>, options?: IComboBoxOption, index?: number, value?: string): void => {
+        if (options) {
+            // If options is an array, extract keys from each option
+            const selectedOptions = Array.isArray(options) ? options.map(option => option.key as string) : [options.key as string];
+            setSelectedTypeOptions(selectedOptions);
         }
     };
 
-    const hardcodedOptions: IComboBoxOption[] = [
-        { key: 'option1', text: 'Option 1' },
-        { key: 'option2', text: 'Option 2' },
-        { key: 'option3', text: 'Option 3' },
-    ];
-    const allOptions = [...hardcodedOptions, ...types];
-    console.log('All options:', allOptions);
+    // const hardcodedOptions: IComboBoxOption[] = [
+    //     { key: 'option1', text: 'Option 1' },
+    //     { key: 'option2', text: 'Option 2' },
+    //     { key: 'option3', text: 'Option 3' },
+    // ];
+    // const allOptions = [...hardcodedOptions, ...types];
+    // console.log('All options:', allOptions);
 
     const _dismissPanel = () => {
         setDialogOpen(false);
     }
 
-
     const onSave = () => {
+        props.onSaveClick(item, selectedCategory, selectedType);
         setDialogOpen(false);
     }
 
@@ -219,54 +220,87 @@ const WaitingListType: React.FC<IProps> = (props) => {
 
     const handleTypeHeaderClick = () => {
         setShowTypePopup(true);
+
     };
 
     const handleFinishClick = () => {
         setShowTypePopup(false);
     };
 
+    const getFundingSource = (item: any): string => {
+        if (props.plantypes && props.plantypes.length > 0 && props.fundingtypes && props.fundingtypes.length > 0 && item.sabs_fundingtype && item.sabs_plantype) {
+            const ft = props.fundingtypes.find((fti: any) => fti.TypeCode === item.sabs_fundingtype);
+            if (ft) {
+                let fundingsource = '';
+                fundingsource = ft.TypeText;
+                const pt = props.plantypes.find((pti: any) => pti.TypeCode === item.sabs_plantype);
+                if (pt)
+                    fundingsource += '-' + pt.TypeText;
+                return fundingsource;
+            }
+        }
+        return '';
+    }
+
+    // Filtering logic
+    const filteredData = selectedTypeOptions.length > 0
+        ? props.data.filter((row: Row) => selectedTypeOptions.includes(row.type))
+        : selectedTypeOptions.length === 0 // Check if no options are selected
+            ? props.data // If no options are selected, show all data
+            : []; // Otherwise, show an empty array
+
     return (
         <div
-            style={{ marginRight: "50px", marginLeft: "50px", height: "1000px", marginTop: "30px", fontFamily: 'Calibri' }}
+            style={{ marginRight: "50px", marginLeft: "50px", height: "1000px", marginTop: "30px", fontFamily: 'Calibri', }}
             ref={tableRef}
         >
-            <Grid container justifyContent="flex-end" spacing={1} style={{ marginBottom: "20px" }}>
+            <Grid container justifyContent="flex-end" spacing={1}>
                 <Grid item>
-                     {/* <PrimaryButton
-                        styles={buttonStyles}
-                        onClick={() => handleButtonClick("Button 1")}
-                        text="Button 1"
-                        checked={selectedButton === "Button 1"}
-                    /> */}
                     <PrimaryButton
                         onClick={() => handleButtonClick("Enquiry List")}
                         text="Enquiry List"
-                        style={{ backgroundColor: selectedButton === "Enquiry List" ? 'green' : undefined, fontFamily: 'Calibri' }}
+                        style={{
+                            backgroundColor: selectedButton === "Enquiry List" ? 'green' : '#1769AA', // Change 'blue' to 'red'
+                            fontFamily: 'Calibri',
+                            border: 'none'
+                        }}
                     />
                 </Grid>
                 <Grid item>
                     <PrimaryButton
                         onClick={() => handleButtonClick("Waiting Assessment")}
                         text="Waiting Assessment"
-                        style={{ backgroundColor: selectedButton === "Waiting Assessment" ? 'green' : undefined, fontFamily: 'Calibri' }}
+                        style={{
+                            backgroundColor: selectedButton === "Waiting Assessment" ? 'green' : '#1769AA', // Change 'blue' to 'red'
+                            fontFamily: 'Calibri',
+                            border: 'none'
+                        }}
                     />
                 </Grid>
                 <Grid item>
                     <PrimaryButton
                         onClick={() => handleButtonClick("Booked Assessment")}
                         text="Booked Assessment"
-                        style={{ backgroundColor: selectedButton === "Booked Assessment" ? 'green' : undefined, fontFamily: 'Calibri' }}
+                        style={{
+                            backgroundColor: selectedButton === "Booked Assessment" ? 'green' : '#1769AA', // Change 'blue' to 'red'
+                            fontFamily: 'Calibri',
+                            border: 'none'
+                        }}
                     />
                 </Grid>
                 <Grid item>
                     <PrimaryButton
                         onClick={() => handleButtonClick("Active List")}
                         text="Active List"
-                        style={{ backgroundColor: selectedButton === "Active List" ? 'green' : undefined, fontFamily: 'Calibri' }}
+                        style={{
+                            backgroundColor: selectedButton === "Active List" ? 'green' : '#1769AA', // Change 'blue' to 'red'
+                            fontFamily: 'Calibri',
+                            border: 'none'
+                        }}
                     />
                 </Grid>
-            </Grid>            
-            <TableContainer component={Paper} style={{ marginTop: "20px", overflowX: 'auto' }}>
+            </Grid>
+            <TableContainer component={Paper} style={{ marginTop: "3px", overflowX: 'auto' }}>
                 <Table aria-label="customized table">
                     <TableHead>
                         <TableRow>
@@ -279,18 +313,19 @@ const WaitingListType: React.FC<IProps> = (props) => {
                             <StyledTableCell onClick={handleTypeHeaderClick} style={{ minWidth: '100px', fontFamily: 'Calibri' }}>Type</StyledTableCell>
                             <StyledTableCell style={{ fontFamily: 'Calibri' }}>Service Category</StyledTableCell>
                             <StyledTableCell style={{ fontFamily: 'Calibri' }}>Funding Source</StyledTableCell>
-                            <StyledTableCell style={{ fontFamily: 'Calibri' }}>Funding Start</StyledTableCell>
-                            <StyledTableCell style={{ fontFamily: 'Calibri' }}>Funding End</StyledTableCell>
+                            {/* <StyledTableCell style={{ fontFamily: 'Calibri' }}>Funding Start</StyledTableCell>
+                            <StyledTableCell style={{ fontFamily: 'Calibri' }}>Funding End</StyledTableCell> */}
                             <StyledTableCell style={{ fontFamily: 'Calibri' }}>Email Address</StyledTableCell>
                             <StyledTableCell style={{ fontFamily: 'Calibri' }}>Mobile Number</StyledTableCell>
                         </TableRow>
                     </TableHead>
 
                     <TableBody>
-                        {props.data.map((row: any, index: number) => {
-                            const age = differenceInYears(new Date(), parseISO(row.sabs_dob)); // Calculate age
-                            const daysSinceCreation = differenceInDays(new Date(), parseISO(row.createdon));  // Calculate days since creation
-                            const daysSinceOpened = differenceInDays(parseISO(row.createdon), parseISO(row.opened)); // Calculate days between createdon and opened
+                    {filteredData.map((row: any, index: number) => {
+                        // {props.data.map((row: any, index: number) => {
+                            const age = row.sabs_dob ? differenceInYears(new Date(), parseISO(row.sabs_dob)) : '';
+                            const daysSinceCreation = differenceInDays(new Date(), parseISO(row.createdon));
+                            const daysSinceOpened = differenceInDays(parseISO(row.createdon), parseISO(row.opened));
                             return (
                                 <StyledTableRow
                                     key={index}
@@ -301,24 +336,26 @@ const WaitingListType: React.FC<IProps> = (props) => {
                                     style={{ backgroundColor: hoveredRow === index ? "#f0f0f0" : "inherit" }}
                                 >
                                     <TableCell style={{ fontFamily: 'Calibri' }}>{row.name}</TableCell>
-                                    <TableCell style={{ fontFamily: 'Calibri' }}>{age}</TableCell> {/* Display calculated age */}
-                                    <TableCell style={{ fontFamily: 'Calibri' }}>{daysSinceOpened}</TableCell>
-                                    <TableCell style={{ fontFamily: 'Calibri' }}>{daysSinceCreation}</TableCell>  {/* Display days since creation */}
+                                    <TableCell style={{ fontFamily: 'Calibri' }}>{age}</TableCell>
+                                    <TableCell style={{ fontFamily: 'Calibri' }}>{row.opened}</TableCell>
+                                    {/* <TableCell style={{ fontFamily: 'Calibri' }}>{daysSinceOpened}</TableCell> */}
+                                    <TableCell style={{ fontFamily: 'Calibri' }}>{daysSinceCreation}</TableCell>
                                     <TableCell style={{ fontFamily: 'Calibri' }}>{row.priority}</TableCell>
                                     <TableCell style={{ fontFamily: 'Calibri' }}>{row.site}</TableCell>
                                     <TableCell style={{ fontFamily: 'Calibri' }}>{row.type}</TableCell>
                                     <TableCell
                                         style={{
                                             backgroundColor: getBackgroundColor(row.serviceCategory),
-                                            color: row.serviceCategory === "Behaviour Support" ? "black" : "white",
+                                            color: row.serviceCategory === "Behaviour Supports" ? "black" : "white",
                                             fontFamily: 'Calibri'
                                         }}
                                     >
                                         {row.serviceCategory}
                                     </TableCell>
-                                    <TableCell style={{ fontFamily: 'Calibri' }}>{row.fundingSource}</TableCell>
-                                    <TableCell style={{ fontFamily: 'Calibri' }}>{row.fundingStart}</TableCell>
-                                    <TableCell style={{ fontFamily: 'Calibri' }}>{row.fundingEnd}</TableCell>
+                                    {/* <TableCell style={{ fontFamily: 'Calibri' }}>{row.fundingSource}</TableCell> */}
+                                    <TableCell style={{ fontFamily: 'Calibri' }}>{getFundingSource(row)}</TableCell>
+                                    {/* <TableCell style={{ fontFamily: 'Calibri' }}>{row.fundingStart}</TableCell>
+                                    <TableCell style={{ fontFamily: 'Calibri' }}>{row.fundingEnd}</TableCell> */}
                                     <TableCell style={{ fontFamily: 'Calibri' }}>{row.emailAddress}</TableCell>
                                     <TableCell style={{ fontFamily: 'Calibri' }}>{row.mobileNumber}</TableCell>
                                 </StyledTableRow>
@@ -326,6 +363,7 @@ const WaitingListType: React.FC<IProps> = (props) => {
                         })}
                     </TableBody>
 
+                    
                 </Table>
             </TableContainer>
             {showTypePopup && (
@@ -339,7 +377,7 @@ const WaitingListType: React.FC<IProps> = (props) => {
                     <div>
                         <ComboBox
                             multiSelect
-                            options={allOptions}
+                            options={types}
                             placeholder="Select type"
                             onChange={handleTypeComboBoxChange}
                         />
@@ -361,6 +399,7 @@ const WaitingListType: React.FC<IProps> = (props) => {
                     <MenuItem onClick={handleEditClick} disableRipple>
                         <EditIcon />
                         Edit
+                        {/* {selectedRow.name} */}
                     </MenuItem>
                     <MenuItem onClick={() => setSelectedRow(null)} disableRipple>
                         <FileCopyIcon />
@@ -404,7 +443,7 @@ const WaitingListType: React.FC<IProps> = (props) => {
       </Dialog> */}
 
             <Panel
-                isOpen={dialogOpen}
+                isOpen={dialogOpen && item && item.sabs_waitlistcatagory.length > 0}
                 onDismiss={_dismissPanel}
                 type={PanelType.smallFixedFar}
                 //customWidth='1080'
@@ -412,15 +451,19 @@ const WaitingListType: React.FC<IProps> = (props) => {
                 headerText='Edit Waitlist'
             >
                 <div>
-                    <Dropdown
-                        label='Category'
-                        options={categories}
-                        onChange={handleDropdownChange('category')}
-                    />
+                    {item &&
+                        <Dropdown
+                            label='Category'
+                            options={props.categories}
+                            onChange={handleDropdownChange('category')}
+                            selectedKey={selectedCategory && selectedCategory !== ''? selectedCategory : ''}
+                        />
+                    }
                     <Dropdown
                         label='Type'
                         options={types}
                         onChange={handleDropdownChange('type')}
+                        selectedKey={selectedType && selectedType !== ''? selectedType : ''}
                     />
                     <br />
                     <PrimaryButton onClick={onSave} styles={buttonStyles}>
@@ -432,9 +475,6 @@ const WaitingListType: React.FC<IProps> = (props) => {
             </Panel>
         </div>
     );
-
-
-
 };
 
 export default WaitingListType;
@@ -442,5 +482,9 @@ export default WaitingListType;
 interface IProps {
     data: any;
     waitlisttypes: any;
+    categories: any;
+    fundingtypes: any;
+    plantypes: any;
     onButtonClick: (buttonName: string) => void;
+    onSaveClick: (item: any, category: string | number, type: string | number) => void;
 }

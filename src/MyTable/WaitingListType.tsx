@@ -181,7 +181,6 @@ const WaitingListType: React.FC<IProps> = (props) => {
         }
     };
 
-
     // const handleTypeComboBoxChange = (event: React.FormEvent<IComboBox>, option?: IComboBoxOption, index?: number, value?: string): void => {
     //     if (option) {
     //         console.log('Type ComboBox selected option:', option);
@@ -243,11 +242,24 @@ const WaitingListType: React.FC<IProps> = (props) => {
     }
 
     // Filtering logic
+    // const filteredData = selectedTypeOptions.length > 0
+    //     ? props.data.filter((row: Row) => selectedTypeOptions.includes(row.type))
+    //     : selectedTypeOptions.length === 0 // Check if no options are selected
+    //         ? props.data // If no options are selected, show all data
+    //         : []; // Otherwise, show an empty array
+
+    // Filtering logic
+    // const filteredData = selectedTypeOptions.length > 0
+    //     ? props.data.filter((row: Row) => selectedTypeOptions.includes(row.type))
+    //     : props.data;
+
+    // Filtering logic
     const filteredData = selectedTypeOptions.length > 0
-        ? props.data.filter((row: Row) => selectedTypeOptions.includes(row.type))
-        : selectedTypeOptions.length === 0 // Check if no options are selected
-            ? props.data // If no options are selected, show all data
-            : []; // Otherwise, show an empty array
+        ? props.data.filter((row: Row) => selectedTypeOptions.some(option => row.type.includes(option)))
+        : props.data;
+
+
+
 
     return (
         <div

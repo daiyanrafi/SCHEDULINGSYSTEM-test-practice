@@ -89,7 +89,6 @@ const StyledMenu = styled(Menu)(({ theme }) => ({
 
 const WaitingListType: React.FC<IProps> = (props) => {
     const [menuPosition, setMenuPosition] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
-    const [selectedRow, setSelectedRow] = useState<Row | null>(null);
     const [hoveredRow, setHoveredRow] = useState<number | null>(null);
     const [dialogOpen, setDialogOpen] = useState(false);
     const [types, setTypes] = useState<any[]>([]);
@@ -99,6 +98,7 @@ const WaitingListType: React.FC<IProps> = (props) => {
     const [selectedType, setSelectedType] = useState<string | number>('');
     const [selectedCategory, setSelectedCategory] = useState<string | number>('');
     const [showTypePopup, setShowTypePopup] = useState(false); // State to control showing type popup
+    const [selectedRow, setSelectedRow] = useState<Row | null>(null);
     const [selectedTypeOptions, setSelectedTypeOptions] = useState<string[]>([]);
 
     const getBackgroundColor = (category: string) => {
@@ -165,7 +165,7 @@ const WaitingListType: React.FC<IProps> = (props) => {
     };
 
     const handleButtonClick = (buttonName: string) => {
-        props.onButtonClick(buttonName); // this line added new to move the button click
+        props.onButtonClick(buttonName);
         setSelectedButton(buttonName);
         oncategorychange(buttonName);
     };
@@ -181,6 +181,7 @@ const WaitingListType: React.FC<IProps> = (props) => {
         }
     };
 
+
     // const handleTypeComboBoxChange = (event: React.FormEvent<IComboBox>, option?: IComboBoxOption, index?: number, value?: string): void => {
     //     if (option) {
     //         console.log('Type ComboBox selected option:', option);
@@ -190,13 +191,39 @@ const WaitingListType: React.FC<IProps> = (props) => {
     //     }
     // };
 
-    const handleTypeComboBoxChange = (event: React.FormEvent<IComboBox>, options?: IComboBoxOption, index?: number, value?: string): void => {
-        if (options) {
-            // If options is an array, extract keys from each option
-            const selectedOptions = Array.isArray(options) ? options.map(option => option.key as string) : [options.key as string];
-            setSelectedTypeOptions(selectedOptions);
+    // const handleTypeComboBoxChange = (event: React.FormEvent<IComboBox>, options?: IComboBoxOption, index?: number, value?: string): void => {
+    //     if (options) {
+    //         const selectedOptions = Array.isArray(options) ? options.map(option => option.key as string) : [options.key as string];
+    //         setSelectedTypeOptions(selectedOptions);
+    //     }
+    // };
+
+    //  // Function to handle ComboBox change
+    //  const handleTypeComboBoxChange = (event: React.FormEvent<IComboBox>, options?: IComboBoxOption, index?: number, value?: string): void => {
+    //     if (options) {
+    //         const selectedOption = options.key as string;
+    //         const updatedOptions = [...selectedTypeOptions, selectedOption]; // Add the selected option to the array
+    //         setSelectedTypeOptions(updatedOptions);
+    //     }
+    // };
+
+    // Function to handle ComboBox change
+const handleTypeComboBoxChange = (event: React.FormEvent<IComboBox>, options?: IComboBoxOption, index?: number, value?: string): void => {
+    if (options) {
+        const selectedOption = options.key as string;
+        const isChecked = options.selected;
+        
+        // Update selectedTypeOptions based on whether the option is checked or unchecked
+        if (isChecked) {
+            const updatedOptions = [...selectedTypeOptions, selectedOption]; // Add the selected option to the array
+            setSelectedTypeOptions(updatedOptions);
+        } else {
+            const updatedOptions = selectedTypeOptions.filter(option => option !== selectedOption); // Remove the unchecked option from the array
+            setSelectedTypeOptions(updatedOptions);
         }
-    };
+    }
+};
+
 
     // const hardcodedOptions: IComboBoxOption[] = [
     //     { key: 'option1', text: 'Option 1' },
@@ -241,25 +268,16 @@ const WaitingListType: React.FC<IProps> = (props) => {
         return '';
     }
 
-    // Filtering logic
     // const filteredData = selectedTypeOptions.length > 0
     //     ? props.data.filter((row: Row) => selectedTypeOptions.includes(row.type))
-    //     : selectedTypeOptions.length === 0 // Check if no options are selected
-    //         ? props.data // If no options are selected, show all data
-    //         : []; // Otherwise, show an empty array
+    //     : selectedTypeOptions.length === 0
+    //         ? props.data
+    //         : [];
 
-    // Filtering logic
-    // const filteredData = selectedTypeOptions.length > 0
-    //     ? props.data.filter((row: Row) => selectedTypeOptions.includes(row.type))
-    //     : props.data;
-
-    // Filtering logic
+    // Filtered data based on selected options
     const filteredData = selectedTypeOptions.length > 0
-        ? props.data.filter((row: Row) => selectedTypeOptions.some(option => row.type.includes(option)))
+        ? props.data.filter((row: Row) => selectedTypeOptions.includes(row.type))
         : props.data;
-
-
-
 
     return (
         <div

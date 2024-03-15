@@ -3,11 +3,9 @@ import { TableCell } from "@mui/material";
 import ScheduleManagement, { ScheduleItem } from "../../schedule/ScheduleManagement";
 import { IScheduleColumn } from "./SABSCalendar";
 
-const SABSTableCell: React.FC<IProp> = (prop) => {
-  const { schedule } = prop;
-
+const SABSTableCell: React.FC<IProp> = ({ schedule, onCellClick }) => {
   const handleClick = () => {
-    console.log("Appoinment clicked");
+    onCellClick(schedule);
   };
 
   return (
@@ -41,11 +39,10 @@ const SABSTableCell: React.FC<IProp> = (prop) => {
   );
 };
 
-export const SABSEmptyTableCell: React.FC<IEmptyCell> = (prop) => {
-  const { header } = prop;
 
+export const SABSEmptyTableCell: React.FC<IEmptyCell> = ({ header, onCellClick }) => {
   const handleClick = () => {
-    console.log("empty cell clicked");
+    onCellClick(header);
   };
 
   return (
@@ -68,8 +65,10 @@ export default SABSTableCell;
 
 interface IProp {
   schedule: ScheduleItem;
+  onCellClick: (schedule: ScheduleItem) => void;
 }
 
 interface IEmptyCell {
   header: IScheduleColumn
+  onCellClick: (header: IScheduleColumn) => void;
 }

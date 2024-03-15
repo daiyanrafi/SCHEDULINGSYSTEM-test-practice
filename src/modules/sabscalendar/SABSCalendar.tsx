@@ -12,7 +12,7 @@ import {
   IconButton,
 } from "@mui/material";
 
-import ScheduleManagement from "../../schedule/ScheduleManagement";
+// import ScheduleManagement from "../../schedule/ScheduleManagement";
 import SABSTableCell, { SABSEmptyTableCell } from "./SABSTableCell";
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
@@ -26,6 +26,8 @@ const SABSCalendar: React.FC<{
   onCloseModal: () => void; 
   onForwardClick: () => void;
   onBackwardClick: () => void;
+  onAppointmentClick: (schedule: ScheduleItem) => void;
+  onEmptyCellClick: (header: any) => void;
 }> = ({
   resources,
   bookings,
@@ -33,6 +35,8 @@ const SABSCalendar: React.FC<{
   selectedRowData,
   onForwardClick,
   onBackwardClick,
+  onAppointmentClick,
+  onEmptyCellClick,
 }) => {
   const startDate = new Date("2024-02-25T23:00:00Z");
   const endDate = new Date("2024-04-12T23:00:00Z");
@@ -151,13 +155,13 @@ const SABSCalendar: React.FC<{
           // width: `${colspan * 0}px`
         }}
       >
-        <ScheduleManagement
+        {/* <ScheduleManagement
           schedule={daybookings}
           onRowClick={(rowData: ScheduleItem) => {
             console.log("Appointment clicked");
             // onOpenModal(rowData);
           }}
-        />
+        /> */}
       </TableCell>
     );
   };
@@ -179,7 +183,7 @@ const SABSCalendar: React.FC<{
   }
 
 
-  const columns = (headers: IScheduleColumn[], resourceid: string) => {
+  const columns = (headers: IScheduleColumn[], resourceid: string, onAppointmentClick: any, onEmptyCellClick: any) => {
     var skipcell: number = 0;
     return headers.map((header: IScheduleColumn) => {
       header.resourceid = resourceid;
@@ -198,14 +202,14 @@ const SABSCalendar: React.FC<{
 
       if (cellappointment) {
         skipcell = cellappointment.callspan - 1;
-        return <SABSTableCell schedule={cellappointment} />
+        return <SABSTableCell schedule={cellappointment} onCellClick={onAppointmentClick} />;
       }
-
+  
       if (skipcell === 0) {
-        return <SABSEmptyTableCell header={header} />
-      }
-      else
+        return <SABSEmptyTableCell header={header} onCellClick={onEmptyCellClick} />;
+      } else {
         skipcell -= 1;
+      }
     });
   };
 
@@ -281,11 +285,11 @@ const SABSCalendar: React.FC<{
   };
 
   const handleForwardClick = () => {
-    onForwardClick(); // Call the prop function
+    onForwardClick();
   };
 
   const handleBackwardClick = () => {
-    onBackwardClick(); // Call the prop function
+    onBackwardClick();
   };
 
   React.useEffect(() => {
@@ -323,7 +327,7 @@ const SABSCalendar: React.FC<{
                   borderLeft: "0px solid #E0E0E0",
                   textAlign: "center",
                   width: "150px",
-                  padding: "unset", // Ensure padding is unset
+                  padding: "unset",
                 }}
               >
                 <Typography variant="h3" sx={{
@@ -335,7 +339,7 @@ const SABSCalendar: React.FC<{
                   {resource.name}
                 </Typography>
               </TableCell>
-              {columns(headers, resource.bookableresourceid)}
+              {columns(headers, resource.bookableresourceid, onAppointmentClick, onEmptyCellClick)}
             </TableRow>
           ))}
         </TableBody>
@@ -376,7 +380,7 @@ const SABSCalendar: React.FC<{
         </Box>
       </Modal> */}
       
-      {/* Add forward and backward buttons */}
+
       <div style={{ textAlign: "right", marginTop: "05px" }}>
         <IconButton onClick={handleBackwardClick} size="small">
           <SkipPreviousIcon />

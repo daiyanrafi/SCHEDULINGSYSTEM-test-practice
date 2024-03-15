@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import ScheduleDashboard from './Dashboard';
 import resourcesData from './data/resource.json';
 import bookingsData from './data/bookings.json';
 import SABSCalendar from './modules/sabscalendar/SABSCalendar';
@@ -19,12 +18,18 @@ const DashboardParent = () => {
 
   const handleForwardClick = () => {
     console.log("Forward");
-    // Add your logic here
   };
 
   const handleBackwardClick = () => {
     console.log("Backward");
-    // Add your logic here
+  };
+
+  const handleAppointmentClick = (schedule: any) => {
+    console.log("Appointment clicked", schedule);
+  };
+
+  const handleEmptyCellClick = (header: any) => {
+    console.log("Empty cell clicked", header);
   };
 
   return (
@@ -38,6 +43,8 @@ const DashboardParent = () => {
         onCloseModal={handleCloseModal}
         onForwardClick={handleForwardClick}
         onBackwardClick={handleBackwardClick}
+        onAppointmentClick={handleAppointmentClick} 
+        onEmptyCellClick={handleEmptyCellClick}
       />
     </div>
   );
